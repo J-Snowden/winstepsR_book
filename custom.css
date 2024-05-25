@@ -1,0 +1,19 @@
+/* Custom CSS for underlining chapter titles */
+.book .book-body .page-wrapper .page-inner section.level1 h1 {
+  border-bottom: 3px solid #000; /* Adjust color and thickness */
+  padding-bottom: 0.2em; /* Adjust padding below the text */
+  display: inline-block;
+}
+
+.book .book-body .page-wrapper .page-inner section.level2 h2 {
+  border-bottom: none;
+}
+
+.level1 .header-section-number {
+  display: inline-block;
+  border-bottom: 3px solid;
+}
+
+.level2 .header-section-number {
+  border-bottom: none;
+}

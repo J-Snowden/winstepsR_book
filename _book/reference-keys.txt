@@ -29,3 +29,8 @@ excel
 spss
 url-your-book-url-like-httpsbookdown.orgyihuibookdown
 r-setup-includefalse-librarywinstepsr
+cover-image-path-to-the-social-sharing-image-like-imagescover.jpg
+test
+tresaf
+preface
+wtf

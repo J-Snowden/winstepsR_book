@@ -1,79 +1,138 @@
-# Getting Started with Winsteps Control Files and Batch Processing
 
-## `r_control_file`
+```{r setup, include=FALSE}
+library(winstepsR) 
+```
 
-The first function we will use is `r_control_file`, which takes a dataset in R and creates a WINSTEPS control text file in your working directory. The structure of the function looks like this:
+# Introduction & Basics
+
+Welcome to the user guide for the `winstepsR` package. This guide will show you how to install and use the package step by step.
+
+## Install from Github
+
+`winstepsR` is currently hosted on Github. To download it you first need to install the `remotes` package and load it into your library.
+
+```{r eval=FALSE}
+install.packages("remotes")
+library(remotes)
+```
+
+Now you can use the `remotes` package to install `winstepsR` and add it to your library.
+
+```{r eval=FALSE}
+remotes::install_github("J-Snowden/winstepsR")
+library(winstepsR)
+```
+
+In future sessions, after you have installed the package, you will only need to load it into your library using `library(winstepsR)`. However, if the package has been updated you will need to install it again using `remotes::install_github("J-Snowden/winstepsR")`.
+
+## Sample Data
+
+The package includes a sample data set with randomly generated values which will be used for examples in this guide. The data set is named `sampledata`. You can see an what it looks like using `head(sampledata)` to see the first 10 rows:
+
+```{r echo=FALSE}
+head(sampledata)
+```
+
+`samepledata` includes three sets of items, one with dichotomous values (0, 1), one with Likert style responses with values ranging from 0 to 6, and one with Likert style responses ranging from 0 to 10. There are also two columns that represent demographic data for use when examining DIF.
+
+## Getting Started
+
+### Creating a Project and Setting your working directory
+
+To start a new project in RStudio, go to `File` > `New Project...` and follow the prompts to create a new directory for your project. 
+
+Once your project is set up, you can use the `here` package to manage your working directory. This package helps you avoid issues with setting working directories manually.
+
+First, install and load the `here` package:
 
 ```{r, eval=FALSE}
-r_control_file <- function(name, df, first_item, num_items, person_id_col, ...,
-                            groups = NULL, irefer = NULL, ifile = NULL,
-                            sfile = NULL, demographics = NULL, key = NULL)
+install.packages("here")
+library(here)
 ```
 
-`r_control_file` has 5 required arguments and 6 optional arguments, which we will cover later. The required arguments are:
-
-- **`name`**: The name you want to save the control file as. Because this is a string it must be enclosed in quotes.
-- **`df`**: An R data frame object containing your dataset.
-- **`first_item`**: The numeric column location of the first item in your dataset.
-- **`num_items`**: The number of items you want to add to the control file. These items must be in columns that follow the first item you specify.
-- **`person_id_col`**: The name of the column where person identifiers (IDs) are located. Because this is a string it must be enclosed in quotes.
-
-Using our sample data, running the function looks like this:
+Then, you can set your working directory using here::here(), which sets the working directory to the root of your project:
 
 ```{r, eval=FALSE}
-r_control_file("dicot", dicot, 2, 8, "ID")
+# Load the here package
+library(here)
+
+# Set the working directory to the root of your project
+setwd(here::here("Rasch/Example"))
 ```
 
-Here, we have named the control file `"dicot"` and used the existing R data `dicot`. The control file name can be different from the R data, but naming it the same can avoid confusion later. The number `2` tells the function that the first item appears in the second column while the `8` tells the function that there are eight items. `"ID"` tells the function that the identifier column is named "ID".
+Using here::here() ensures that your file paths are always relative to the project root, making your code more robust and portable.
 
-Upon running this function a new control file is generated in your working directory named `dicot_cf_r.txt`. This control file can be loaded manually using WINSTEPS and works as if you had created the file manually through Winsteps.
+**Important Note:** When creating a folder to use with this package there cannot be any spaces in the folder name. Some functions use batch files with Winsteps to create files, and the process will fail if there are spaces in any folder names.
 
-Optional arguments that let you create more complex and customized control files are cover in a later chapter.
+### Loading in your own data
 
-## `winsteps_output`
+You can load in your own data to R using various packages depending on the type of your data. Examples for Excel (.xlsx) and SPSS (.sav) are provided below.
 
-This function uses a Winsteps control file, created using this package or  created manually, to automatically create and save Winsteps output files. It does by creating, running, then deleting a batch file. A batch file is a script that automates the execution of commands in sequence. With Winsteps, batch files enable running multiple analyses with minimal user interaction to run tasks in the background. More information can be found on the Winsteps website at [Winsteps Batch Processing documentation](https://www.winsteps.com/winman/batch.htm). The structure of the function looks like this:
+#### Excel
 
+First, you need to install the `readxl` package if you haven't already:
 
 ```{r, eval=FALSE}
-winsteps_output <- function(ctrlfile, shortname, ..., tables = NULL,
-                            files = NULL, dif = NULL, ifile = NULL,
-                            sfile = NULL)
+install.packages("readxl")
+library(readxl)
 ```
 
-`winsteps_output` has 2 required arguments and 5 optional arguments. The required arguments are:
+After installing the package, you can use the `read_excel` function to read data from an Excel file. Here's an example:
 
-- **`ctrlfile`**: This is the name of the control file, it needs to include the filetype at the end (.txt). Because this is a string it must be enclosed in quotes.
-- **`shortname`**: This is the name you want all of the output files to have, I often set it to the same name as the data. Because this is a string it must be enclosed in quotes.
+Replace `'path/to/your/file.xlsx'` with the actual path to your Excel file:
 
-The optional arguments specific which files you want Winsteps to create. You can run the function without an optional argument but nothing will be saved. 
+`excel_data <- read_excel("path/to/your/file.xlsx")`
 
-- **`tables`**: The tables you want to be saved. In Winsteps these are found under the Output Tables menu. You can find an index of tables on [the Winsteps website](https://www.winsteps.com/winman/outputtableindex.htm){target="_blank"}.
-- **`files`**: The files you want to be saved. Because these are strings, they must be enclosed in quotes. In Winsteps these are found under the Output Files menu. You can find an index of files on [the Winsteps website](https://www.winsteps.com/winman/outputfileindex.htm){target="_blank"}.
-- **`dif`**: Column names for DIF files you want to output. (This will be covered in more depth in another section).
-- **`ifile`**: File name for an anchoring IFILE you want to be used in processing the tables or files (This will be covered in more depth in another section).
-- **`sfile`**: File name for an anchoring SFILE you want to be used in processing the tables or files (This will be covered in more depth in another section).
+#### SPSS
 
-If you only want one table or file to be created you can run the function with arguments like `tables = 3` or `files = "xfile"`. However, if you want multiple tales or files you need to specify them inside a `c()` function, which combines multiple elements into a vector. For example, to create multiple tables, you would use `tables = c(3, 10, 12, 14, 23)`, and to create multiple files, you would use `files = c("pfile", "xfile")`. This tells the function to generate all specified tables or files.
+To load data from SPSS .sav files, we can use the `haven` package, which provides functions to read data from various formats, including SPSS, Stata, and SAS.
 
-Using our sample data, running the function looks like this:
+First, you need to install the `haven` package if you haven't already:
 
 ```{r, eval=FALSE}
-winsteps_output("dicot_cf_r.txt", "dicot", tables = c(3, 10, 12, 14, 23),
-                files = c("pfile", "xfile"))
+install.packages("haven")
+library(haven)
 ```
 
-Here, we have told the function to use the control file in our working directory named `"dicot_cf_r.txt"`. The `"dicot"` specifics the naming convention that will be use in output tables and files. The optional argument `tables = c(3, 10, 12, 14, 23)` tells the function we want it to process and save tables 3, 10, 12, 14 and 23. The optional argument `files = c("pfile", "xfile")` tells the function we want it to process and save a person file (pfile) and an observation file (xfile).
+After installing the package, you can use the `read_sav` function to read data from an SAV file. Here's an example:
 
-Inside your working directory the function creates and runs a batch file. In the R console you can see the commands the batch file is running. 
+Replace `'path/to/your/file.sav'` with the actual path to your SAV file:
 
+`sav_data <- read_sav("path/to/your/file.sav")`
+
+### Selecting the data you want to use
+
+To select specific columns from your dataset, you can use the `dplyr` package with is included with the `tidyverse` package. This package provides a set of functions that are designed to make data manipulation easy and intuitive.
+
+For our first example we will use the dichotomous items from the `sampledata` dataset.
+
+```{r, eval=FALSE}
+dicot <- sampledata %>% select(ID, Dicot1:Dicot8)
 ```
-C:\Users\sample_user\Desktop\sample_project>START
-/w C:\winsteps\WINSTEPS BATCH=YES
-C:/Users/sample_user/Desktop/sample_project/dicot_cf_r.txt
-C:/Users/sample_user/Desktop/sample_project/dicot_Table_3.txt TABLES=001
-```
 
-It first uses your working directory as a starting place and tells Winsteps it is going to use batch processing. It then tells Winsteps to open the requested control file, then to save table 001, or table 3, as dicot_Table_3.txt. It repeats this process for each requested table or file.
 
-Once the batch file has finished processing it deletes itself. After running this command we now have 5 tables saved as text files along with a person file and observation file saved as Excel files.
+`dicot <- sampledata %>%`: This line creates a new dataset called `dicot` from the existing dataset `sampledata.` The %>% symbol is known as the "pipe" operator and is used to pass the data from the left-hand side to the function on the right-hand side.
+
+`select(ID, Dicot1:Dicot8)`: This part of the code is used to select specific columns from the dataset. The select function from the dplyr package allows you to specify which columns you want to keep in the new dataset:
+
+- **ID**: Selects the column named ID.
+- **Dicot1:Dicot8**: Selects all columns from Dicot1 to Dicot8.
+
+### Dataset Requirements
+
+To run functions within `winstepsR`, your dataset needs to meet certain requirements. Specifically, the dataset should have:
+
+1. **An identifier column**: This column should contain unique identifiers for each row of data (e.g., participant IDs).
+2. **Numeric data columns**: Data you want to process needs to be whole numeric values ranging from 0 to 99. Values larger than 2 digits or with decimals are not currently supported.
+
+Ensuring your dataset is structured in this way will allow the functions within `winstepsR` to operate correctly.
+
+## winstepsR Functions
+
+Currently, the `winstepsR` package has five functions. The first two interface with Winsteps to run analyses and output files. The remaining three work with Winsteps output files in R to process or clean data for further use.
+
+- **`r_control_file`**: Creates a Winsteps control file using data in R.
+- **`winsteps_output`**: Uses Winsteps batch processing to output tables and files.
+- **`filter_zresid`**: Uses a Winsteps observation file to filter out unexpected responses based on Z-residual values.
+- **`clean_dif`**: Cleans Winsteps DIF files to only show significant DIF.
+- **`psychometrics_table`**: Processes Winsteps tables and person files into an organized psychometrics table.

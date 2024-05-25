@@ -1,6 +1,38 @@
-# `winsteps_output`
+# Basic Control Files and Batch Processing
 
-This function uses a WINSTEPS control file, created using this package or  created manually, to automatically create and save WINSTEPS output files. It does by creating, running, then deleting a batch file. A batch file is a script that automates the execution of commands in sequence. With Winsteps, batch files enable running multiple analyses with minimal user interaction to run tasks in the background. More information can be found on the Winsteps website at [Winsteps Batch Processing documentation](https://www.winsteps.com/winman/batch.htm).
+## `r_control_file`
+
+The first function we will use is `r_control_file`, which takes a dataset in R and creates a WINSTEPS control text file in your working directory. The structure of the function looks like this:
+
+```{r, eval=FALSE}
+r_control_file <- function(name, df, first_item, num_items, person_id_col, ...,
+                            groups = NULL, irefer = NULL, ifile = NULL,
+                            sfile = NULL, demographics = NULL, key = NULL)
+```
+
+`r_control_file` has 5 required arguments and 6 optional arguments, which we will cover later. The required arguments are:
+
+- **`name`**: The name you want to save the control file as. Because this is a string it must be enclosed in quotes.
+- **`df`**: An R data frame object containing your dataset.
+- **`first_item`**: The numeric column location of the first item in your dataset.
+- **`num_items`**: The number of items you want to add to the control file. These items must be in columns that follow the first item you specify.
+- **`person_id_col`**: The name of the column where person identifiers (IDs) are located. Because this is a string it must be enclosed in quotes.
+
+Using our sample data, running the function looks like this:
+
+```{r, eval=FALSE}
+r_control_file("dicot", dicot, 2, 8, "ID")
+```
+
+Here, we have named the control file `"dicot"` and used the existing R data `dicot`. The control file name can be different from the R data, but naming it the same can avoid confusion later. The number `2` tells the function that the first item appears in the second column while the `8` tells the function that there are eight items. `"ID"` tells the function that the identifier column is named "ID".
+
+Upon running this function a new control file is generated in your working directory named `dicot_cf_r.txt`. This control file can be loaded manually using WINSTEPS and works as if you had created the file manually through Winsteps.
+
+Optional arguments that let you create more complex and customized control files are cover in a later chapter.
+
+## `winsteps_output`
+
+This function uses a Winsteps control file, created using this package or  created manually, to automatically create and save Winsteps output files. It does by creating, running, then deleting a batch file. A batch file is a script that automates the execution of commands in sequence. With Winsteps, batch files enable running multiple analyses with minimal user interaction to run tasks in the background. More information can be found on the Winsteps website at [Winsteps Batch Processing documentation](https://www.winsteps.com/winman/batch.htm). The structure of the function looks like this:
 
 
 ```{r, eval=FALSE}
@@ -11,13 +43,13 @@ winsteps_output <- function(ctrlfile, shortname, ..., tables = NULL,
 
 `winsteps_output` has 2 required arguments and 5 optional arguments. The required arguments are:
 
-- **`ctrlfile`**: This is the name of the control file, it needs to include the filetype at the end (.txt).
-- **`shortname`**: This is the name you want all of the output files to have, I often set it to the same name as the data.
+- **`ctrlfile`**: This is the name of the control file, it needs to include the filetype at the end (.txt). Because this is a string it must be enclosed in quotes.
+- **`shortname`**: This is the name you want all of the output files to have, I often set it to the same name as the data. Because this is a string it must be enclosed in quotes.
 
 The optional arguments specific which files you want Winsteps to create. You can run the function without an optional argument but nothing will be saved. 
 
 - **`tables`**: The tables you want to be saved. In Winsteps these are found under the Output Tables menu. You can find an index of tables on [the Winsteps website](https://www.winsteps.com/winman/outputtableindex.htm){target="_blank"}.
-- **`tables`**: The files you want to be saved. Desired files need to be enclosed in quotes, ex: `"xfile"`. In Winsteps these are found under the Output Files menu. You can find an index of files on [the Winsteps website](https://www.winsteps.com/winman/outputfileindex.htm){target="_blank"}.
+- **`files`**: The files you want to be saved. Because these are strings, they must be enclosed in quotes. In Winsteps these are found under the Output Files menu. You can find an index of files on [the Winsteps website](https://www.winsteps.com/winman/outputfileindex.htm){target="_blank"}.
 - **`dif`**: Column names for DIF files you want to output. (This will be covered in more depth in another section).
 - **`ifile`**: File name for an anchoring IFILE you want to be used in processing the tables or files (This will be covered in more depth in another section).
 - **`sfile`**: File name for an anchoring SFILE you want to be used in processing the tables or files (This will be covered in more depth in another section).
@@ -31,6 +63,8 @@ winsteps_output("dicot_cf_r.txt", "dicot", tables = c(3, 10, 12, 14, 23),
                 files = c("pfile", "xfile"))
 ```
 
+Here, we have told the function to use the control file in our working directory named `"dicot_cf_r.txt"`. The `"dicot"` specifics the naming convention that will be use in output tables and files. The optional argument `tables = c(3, 10, 12, 14, 23)` tells the function we want it to process and save tables 3, 10, 12, 14 and 23. The optional argument `files = c("pfile", "xfile")` tells the function we want it to process and save a person file (pfile) and an observation file (xfile).
+
 Inside your working directory the function creates and runs a batch file. In the R console you can see the commands the batch file is running. 
 
 ```
@@ -40,6 +74,6 @@ C:/Users/sample_user/Desktop/sample_project/dicot_cf_r.txt
 C:/Users/sample_user/Desktop/sample_project/dicot_Table_3.txt TABLES=001
 ```
 
-It first uses your working directory as a starting place and tells Winsteps it is going to use batch processing. It then tells Winsteps to open the requested control file, then to save table 001, or table 3, as dicot_Table_3.txt.
+It first uses your working directory as a starting place and tells Winsteps it is going to use batch processing. It then tells Winsteps to open the requested control file, then to save table 001, or table 3, as dicot_Table_3.txt. It repeats this process for each requested table or file.
 
-Once the batch file has finished processing it deletes itself. After running this command we now have 5 tables saved at text files and a person file and observation file saved as Excel files.
+Once the batch file has finished processing it deletes itself. After running this command we now have 5 tables saved as text files along with a person file and observation file saved as Excel files.

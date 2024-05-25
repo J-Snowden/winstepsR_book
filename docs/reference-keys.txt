@@ -1,5 +1,3 @@
-eq:binom
-thm:tri
 introduction-basics
 install-from-github
 sample-data
@@ -11,19 +9,6 @@ spss
 selecting-the-data-you-want-to-use
 dataset-requirements
 winstepsr-functions
-getting-started-with-winsteps-control-files-and-batch-processing
+basic-control-files-and-batch-processing
 r_control_file
 winsteps_output
-winsteps_output-1
-parts
-footnotes-and-citations
-footnotes
-citations
-blocks
-equations
-theorems-and-proofs
-callout-blocks
-sharing-your-book
-publishing
-pages
-metadata-for-sharing

@@ -3,3 +3,5 @@ language:
   ui:
     chapter_name: "Chapter "
 output_dir: "docs"
+title: "Automating Winsteps Output with winstepsR"
+rmd_files: ["index.Rmd", "01-r_control_file.Rmd", "02-winsteps_output.Rmd"]

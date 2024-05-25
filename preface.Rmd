@@ -1,0 +1,8 @@
+---
+title: "Preface"
+output: bookdown::gitbook
+---
+
+# Preface
+
+Welcome to "Automating Winsteps Output with winstepsR." This preface will provide an overview of what to expect in the following chapters and some background information on why this book was written.
