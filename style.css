@@ -79,3 +79,10 @@ h1.title {
 .smallcaps {
   font-variant: small-caps;
 }
+
+.img-with-padding {
+  padding: 1em; /* Adjust the padding value as needed */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

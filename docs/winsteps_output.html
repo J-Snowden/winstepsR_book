@@ -10,7 +10,7 @@
 
   <meta property="og:title" content="Chapter 3 winsteps_output | Automating Winsteps Output with winstepsR" />
   <meta property="og:type" content="book" />
-  
+  <meta property="og:image" content="/images/cover.png" />
   <meta property="og:description" content="This is a guide on how to use the R package winstepsR to automate file output from Winsteps." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
@@ -18,7 +18,7 @@
   <meta name="twitter:title" content="Chapter 3 winsteps_output | Automating Winsteps Output with winstepsR" />
   
   <meta name="twitter:description" content="This is a guide on how to use the R package winstepsR to automate file output from Winsteps." />
-  
+  <meta name="twitter:image" content="/images/cover.png" />
 
 <meta name="author" content="Jeffrey Snowden" />
 
@@ -123,6 +123,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -157,9 +179,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="generating-control-files.html"><a href="generating-control-files.html"><i class="fa fa-check"></i><b>2</b> Generating Control Files</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="generating-control-files.html"><a href="generating-control-files.html#r_control_file-basics"><i class="fa fa-check"></i><b>2.1</b> <code>r_control_file</code> Basics</a></li>
-<li class="chapter" data-level="2.2" data-path="generating-control-files.html"><a href="generating-control-files.html#winsteps_output"><i class="fa fa-check"></i><b>2.2</b> <code>winsteps_output</code></a></li>
+<li class="chapter" data-level="2.2" data-path="generating-control-files.html"><a href="generating-control-files.html#optional-arguments"><i class="fa fa-check"></i><b>2.2</b> Optional Arguments</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="generating-control-files.html"><a href="generating-control-files.html#groups"><i class="fa fa-check"></i><b>2.2.1</b> groups</a></li>
+<li class="chapter" data-level="2.2.2" data-path="generating-control-files.html"><a href="generating-control-files.html#ifile"><i class="fa fa-check"></i><b>2.2.2</b> ifile</a></li>
+<li class="chapter" data-level="2.2.3" data-path="generating-control-files.html"><a href="generating-control-files.html#sfile"><i class="fa fa-check"></i><b>2.2.3</b> sfile</a></li>
+<li class="chapter" data-level="2.2.4" data-path="generating-control-files.html"><a href="generating-control-files.html#demographics"><i class="fa fa-check"></i><b>2.2.4</b> demographics</a></li>
+<li class="chapter" data-level="2.2.5" data-path="generating-control-files.html"><a href="generating-control-files.html#key"><i class="fa fa-check"></i><b>2.2.5</b> key</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="winsteps_output-1.html"><a href="winsteps_output-1.html"><i class="fa fa-check"></i><b>3</b> <code>winsteps_output</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="winsteps_output.html"><a href="winsteps_output.html"><i class="fa fa-check"></i><b>3</b> <code>winsteps_output</code></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -180,12 +209,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="winsteps_output-1" class="section level1 hasAnchor" number="3">
-<h1><span class="header-section-number">Chapter 3</span> <code>winsteps_output</code><a href="winsteps_output-1.html#winsteps_output-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="winsteps_output" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> <code>winsteps_output</code><a href="winsteps_output.html#winsteps_output" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This function uses a Winsteps control file, created using this package or created manually, to automatically create and save Winsteps output files. It does by creating, running, then deleting a batch file. A batch file is a script that automates the execution of commands in sequence. With Winsteps, batch files enable running multiple analyses with minimal user interaction to run tasks in the background. More information can be found on the Winsteps website at <a href="https://www.winsteps.com/winman/batch.htm">Winsteps Batch Processing documentation</a>. The structure of the function looks like this:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="winsteps_output-1.html#cb14-1" tabindex="-1"></a>winsteps_output <span class="ot">&lt;-</span> <span class="cf">function</span>(ctrlfile, shortname, ..., <span class="at">tables =</span> <span class="cn">NULL</span>,</span>
-<span id="cb14-2"><a href="winsteps_output-1.html#cb14-2" tabindex="-1"></a>                            <span class="at">files =</span> <span class="cn">NULL</span>, <span class="at">dif =</span> <span class="cn">NULL</span>, <span class="at">ifile =</span> <span class="cn">NULL</span>,</span>
-<span id="cb14-3"><a href="winsteps_output-1.html#cb14-3" tabindex="-1"></a>                            <span class="at">sfile =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="winsteps_output.html#cb18-1" tabindex="-1"></a>winsteps_output <span class="ot">&lt;-</span> <span class="cf">function</span>(ctrlfile, shortname, ..., <span class="at">tables =</span> <span class="cn">NULL</span>,</span>
+<span id="cb18-2"><a href="winsteps_output.html#cb18-2" tabindex="-1"></a>                            <span class="at">files =</span> <span class="cn">NULL</span>, <span class="at">dif =</span> <span class="cn">NULL</span>, <span class="at">ifile =</span> <span class="cn">NULL</span>,</span>
+<span id="cb18-3"><a href="winsteps_output.html#cb18-3" tabindex="-1"></a>                            <span class="at">sfile =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 <p><code>winsteps_output</code> has 2 required arguments and 5 optional arguments. The required arguments are:</p>
 <ul>
 <li><strong><code>ctrlfile</code></strong>: This is the name of the control file, it needs to include the filetype at the end (.txt). Because this is a string it must be enclosed in quotes.</li>
@@ -201,8 +230,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>If you only want one table or file to be created you can run the function with arguments like <code>tables = 3</code> or <code>files = "xfile"</code>. However, if you want multiple tales or files you need to specify them inside a <code>c()</code> function, which combines multiple elements into a vector. For example, to create multiple tables, you would use <code>tables = c(3, 10, 12, 14, 23)</code>, and to create multiple files, you would use <code>files = c("pfile", "xfile")</code>. This tells the function to generate all specified tables or files.</p>
 <p>Using our sample data, running the function looks like this:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="winsteps_output-1.html#cb15-1" tabindex="-1"></a><span class="fu">winsteps_output</span>(<span class="st">&quot;dicot_cf_r.txt&quot;</span>, <span class="st">&quot;dicot&quot;</span>, <span class="at">tables =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">23</span>),</span>
-<span id="cb15-2"><a href="winsteps_output-1.html#cb15-2" tabindex="-1"></a>                <span class="at">files =</span> <span class="fu">c</span>(<span class="st">&quot;pfile&quot;</span>, <span class="st">&quot;xfile&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="winsteps_output.html#cb19-1" tabindex="-1"></a><span class="fu">winsteps_output</span>(<span class="st">&quot;dicot_cf_r.txt&quot;</span>, <span class="st">&quot;dicot&quot;</span>, <span class="at">tables =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">23</span>),</span>
+<span id="cb19-2"><a href="winsteps_output.html#cb19-2" tabindex="-1"></a>                <span class="at">files =</span> <span class="fu">c</span>(<span class="st">&quot;pfile&quot;</span>, <span class="st">&quot;xfile&quot;</span>))</span></code></pre></div>
 <p>Here, we have told the function to use the control file in our working directory named <code>"dicot_cf_r.txt"</code>. The <code>"dicot"</code> specifics the naming convention that will be use in output tables and files. The optional argument <code>tables = c(3, 10, 12, 14, 23)</code> tells the function we want it to process and save tables 3, 10, 12, 14 and 23. The optional argument <code>files = c("pfile", "xfile")</code> tells the function we want it to process and save a person file (pfile) and an observation file (xfile).</p>
 <p>Inside your working directory the function creates and runs a batch file. In the R console you can see the commands the batch file is running.</p>
 <pre><code>C:\Users\sample_user\Desktop\sample_project&gt;START
@@ -212,6 +241,11 @@ C:/Users/sample_user/Desktop/sample_project/dicot_Table_3.txt TABLES=001</code><
 <p>It first uses your working directory as a starting place and tells Winsteps it is going to use batch processing. It then tells Winsteps to open the requested control file, then to save table 001, or table 3, as dicot_Table_3.txt. It repeats this process for each requested table or file.</p>
 <p>Once the batch file has finished processing it deletes itself. After running this command we now have 5 tables saved as text files along with a person file and observation file saved as Excel files.</p>
 
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div class="csl-entry">
+Linacre, John M. 2023. <em>Winsteps® Rasch Measurement Computer Program User’s Guide</em>. Version 5.7.2. Portland, Oregon: Winsteps.com. <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf">https://www.winsteps.com/a/Winsteps-Manual.pdf</a>.
+</div>
+</div>
 </div>
             </section>
 

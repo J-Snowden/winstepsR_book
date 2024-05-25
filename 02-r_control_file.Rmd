@@ -1,0 +1,118 @@
+# Generating Control Files
+
+## `r_control_file` Basics
+
+The first function we will use is `r_control_file`, which takes a dataset in R and creates a WINSTEPS control text file in your working directory. The structure of the function looks like this:
+
+```{r, eval=FALSE}
+r_control_file <- function(name, df, first_item, num_items, person_id_col, ..., 
+                           groups = NULL, ifile = NULL, sfile = NULL,
+                           demographics = NULL, key = NULL)
+```
+
+`r_control_file` has 5 required arguments and 5 optional arguments, which we will cover later. The required arguments are:
+
+- **`name`**: The name you want to save the control file as. Because this is a string it must be enclosed in quotes.
+- **`df`**: An R data frame object containing your dataset.
+- **`first_item`**: The numeric column location of the first item in your dataset.
+- **`num_items`**: The number of items you want to add to the control file. These items must be in columns that follow the first item you specify.
+- **`person_id_col`**: The name of the column where person identifiers (IDs) are located. Because this is a string it must be enclosed in quotes.
+
+Using our sample data, running the function looks like this:
+
+```{r, eval=FALSE}
+r_control_file("dicot", dicot, 2, 5, "ID")
+```
+
+Here, we have named the control file `"dicot"` and used the existing R data `dicot`. The control file name can be different from the R data, but naming it the same can avoid confusion later. The number `2` tells the function that the first item appears in the second column while the `5` tells the function that there are five items. `"ID"` tells the function that the identifier column is named "ID".
+
+Upon running this function a new control file is generated in your working directory named `dicot_cf_r.txt`. This control file can be loaded manually using WINSTEPS and works as if you had created the file manually through Winsteps.
+
+Optional arguments that let you create more complex and customized control files are cover in a later chapter.
+
+## Optional Arguments
+
+The `r_control_file` function has 5 optional arguments you can use to create more customized control files.
+
+### groups
+
+The `groups` argument passed to the function changes the ISGROUPS line of the control file. The ISGROUPS line in the control file allows you to specify groups within your data, enabling targeted analysis and comparison across different subsets. For more detailed information, you can refer to Section 11.86, "ISGROUPS= or GROUPS= assigns items to rating scale groupings," in the [Winsteps manual](https://www.winsteps.com/a/Winsteps-Manual.pdf#page=173){target="_blank"} [@winstepsManual].
+
+For example, if our data set has both dichotomous and polytomous data we need to separate them in groups so they are analyzed with different scales.
+
+Using our sample data we can select sets of items that are both dichotomous and polytomous.
+
+```{r, eval=FALSE}
+mixed_data <- sampledata %>% select(ID, Dicot_1:Dicot_5, Likert_1:Likert_5)
+```
+
+Our new dataframe, mixed_data, contains two types of data that we want to run on different scales within the same Rasch model. To achieve this, we need to use the groups argument in the r_control_file function.
+
+The groups argument must be formatted in a specific way. Each item is assigned to a group using the format "item_range group_number". For example, "1-5 1" indicates that items 1 to 5 belong to group 1 while "6-10 2" indicates that items 6 to 10 belong to group 2.
+
+The function now looks like this:
+
+
+```{r, eval=FALSE}
+r_control_file("mixed_data", mixed_data, 2, 10, "ID", 
+               groups = c("1-5 1", "6-10 2"))
+```
+
+In the control file this adds the following:
+
+```
+ISGROUPS = *
+1-5 1
+6-10 2
+*
+```
+
+You can verify that it is correctly applied by examining table 3.2 to see the different group scales.
+
+### ifile
+
+An Item Output File, or ifile, is a file that contains the calibration information for each item. Chapter 3 details how to generate an ifile, but this step assumes you already have one created. For more detailed information, you can refer to Section 11.73 IFILE= item output file, in the [Winsteps manual](https://www.winsteps.com/a/Winsteps-Manual.pdf#page=153){target="_blank"} [@winstepsManual].
+
+When passed to the `r_control_file` function, the ifile acts as an anchoring file by adding the IAFILE line to the control file. Anchoring involves fixing the parameters of items to set values for the analysis. An example is creating an ifile from post test measures and using it to anchor the item difficulties of a pretest to the post test values. For more detailed information, you can refer to 11.65 IAFILE= item anchor file, in the [Winsteps manual](https://www.winsteps.com/a/Winsteps-Manual.pdf#page=141){target="_blank"} [@winstepsManual].
+
+The following code assumes that you have a ifile named "dicot_post_ifile.txt" in the working directory.
+
+```{r, eval=FALSE}
+r_control_file("dicot_cf_r.txt", dicot, 2, 5, "ID", 
+               ifile = "dicot_post_ifile.txt")
+```
+
+In the control file this adds the following:
+
+```
+IAFILE = dicot_post_ifile.txt
+```
+
+Now when an analysis is run using the control file the values of all the items will be anchored to the values in the ifile. You can verify this by examining Table 10 and looking for an A next to the measure value under "JMLE MEASURE" and the new "DISPLACE" column that shows the displacement between the current measure values and the anchored values.
+
+### sfile
+
+An Item-structure Output File, or sfile, is a file that contains the category structure-threshold values for each item. Chapter 3 details how to generate an sfile, but this step assumes you already have one created. For more detailed information, you can refer to Section 11.174 SFILE= category structure-threshold output file, in the [Winsteps manual](https://www.winsteps.com/a/Winsteps-Manual.pdf#page=264){target="_blank"} [@winstepsManual].
+
+When passed to the `r_control_file` function, the sfile acts as an anchoring file by adding the SAFILE line to the control file. **When anchoring polytomous data using a rating scale model you must use both an ifile and sfile to anchor both the item vales and the category structure-threshold values.**
+
+The following code assumes that you have an ifile named "dicot_post_ifile.txt" and an sfile named "dicot_post_sfile.txt" in the working directory.
+
+```{r, eval=FALSE}
+r_control_file("dicot_cf_r.txt", dicot, 2, 5, "ID",
+               ifile = "dicot_post_ifile.txt",
+               sfile = "dicot_post_sfile.txt")
+```
+
+In the control file this adds the following:
+
+```
+IAFILE = dicot_post_ifile.txt
+SAFILE = dicot_post_sfile.txt
+```
+
+Now when an analysis is run using the control file the values of all the items will be anchored to the values in the ifile and the category structure-threshold values will be anchored to the values in the sfile. You can verify the sfile is working by examining Table 3.2 and ADD TEXT HERE.
+
+### demographics
+
+### key

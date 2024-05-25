@@ -10,7 +10,7 @@
 
   <meta property="og:title" content="Chapter 1 Introduction &amp; Basics | Automating Winsteps Output with winstepsR" />
   <meta property="og:type" content="book" />
-  
+  <meta property="og:image" content="/images/cover.png" />
   <meta property="og:description" content="This is a guide on how to use the R package winstepsR to automate file output from Winsteps." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
@@ -18,7 +18,7 @@
   <meta name="twitter:title" content="Chapter 1 Introduction &amp; Basics | Automating Winsteps Output with winstepsR" />
   
   <meta name="twitter:description" content="This is a guide on how to use the R package winstepsR to automate file output from Winsteps." />
-  
+  <meta name="twitter:image" content="/images/cover.png" />
 
 <meta name="author" content="Jeffrey Snowden" />
 
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="basic-control-files-and-batch-processing.html"/>
+<link rel="next" href="generating-control-files.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -123,6 +123,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -154,11 +176,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="introduction-basics.html"><a href="introduction-basics.html#winstepsr-functions"><i class="fa fa-check"></i><b>1.4</b> winstepsR Functions</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="basic-control-files-and-batch-processing.html"><a href="basic-control-files-and-batch-processing.html"><i class="fa fa-check"></i><b>2</b> Basic Control Files and Batch Processing</a>
+<li class="chapter" data-level="2" data-path="generating-control-files.html"><a href="generating-control-files.html"><i class="fa fa-check"></i><b>2</b> Generating Control Files</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="basic-control-files-and-batch-processing.html"><a href="basic-control-files-and-batch-processing.html#r_control_file"><i class="fa fa-check"></i><b>2.1</b> <code>r_control_file</code></a></li>
-<li class="chapter" data-level="2.2" data-path="basic-control-files-and-batch-processing.html"><a href="basic-control-files-and-batch-processing.html#winsteps_output"><i class="fa fa-check"></i><b>2.2</b> <code>winsteps_output</code></a></li>
+<li class="chapter" data-level="2.1" data-path="generating-control-files.html"><a href="generating-control-files.html#r_control_file-basics"><i class="fa fa-check"></i><b>2.1</b> <code>r_control_file</code> Basics</a></li>
+<li class="chapter" data-level="2.2" data-path="generating-control-files.html"><a href="generating-control-files.html#optional-arguments"><i class="fa fa-check"></i><b>2.2</b> Optional Arguments</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="generating-control-files.html"><a href="generating-control-files.html#groups"><i class="fa fa-check"></i><b>2.2.1</b> groups</a></li>
+<li class="chapter" data-level="2.2.2" data-path="generating-control-files.html"><a href="generating-control-files.html#ifile"><i class="fa fa-check"></i><b>2.2.2</b> ifile</a></li>
+<li class="chapter" data-level="2.2.3" data-path="generating-control-files.html"><a href="generating-control-files.html#sfile"><i class="fa fa-check"></i><b>2.2.3</b> sfile</a></li>
+<li class="chapter" data-level="2.2.4" data-path="generating-control-files.html"><a href="generating-control-files.html#demographics"><i class="fa fa-check"></i><b>2.2.4</b> demographics</a></li>
+<li class="chapter" data-level="2.2.5" data-path="generating-control-files.html"><a href="generating-control-files.html#key"><i class="fa fa-check"></i><b>2.2.5</b> key</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="winsteps_output.html"><a href="winsteps_output.html"><i class="fa fa-check"></i><b>3</b> <code>winsteps_output</code></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -265,10 +295,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>For our first example we will use the dichotomous items from the <code>sampledata</code> dataset.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="introduction-basics.html#cb8-1" tabindex="-1"></a>dicot <span class="ot">&lt;-</span> sampledata <span class="sc">%&gt;%</span> <span class="fu">select</span>(ID, Dicot1<span class="sc">:</span>Dicot8)</span></code></pre></div>
 <p><code>dicot &lt;- sampledata %&gt;%</code>: This line creates a new dataset called <code>dicot</code> from the existing dataset <code>sampledata.</code> The %&gt;% symbol is known as the “pipe” operator and is used to pass the data from the left-hand side to the function on the right-hand side.</p>
-<p><code>select(ID, Dicot1:Dicot8)</code>: This part of the code is used to select specific columns from the dataset. The select function from the dplyr package allows you to specify which columns you want to keep in the new dataset:</p>
+<p><code>select(ID, Dicot1:Dicot5)</code>: This part of the code is used to select specific columns from the dataset. The select function from the dplyr package allows you to specify which columns you want to keep in the new dataset:</p>
 <ul>
 <li><strong>ID</strong>: Selects the column named ID.</li>
-<li><strong>Dicot1:Dicot8</strong>: Selects all columns from Dicot1 to Dicot8.</li>
+<li><strong>Dicot1:Dicot5</strong>: Selects all columns from Dicot1 to Dicot5.</li>
 </ul>
 </div>
 <div id="dataset-requirements" class="section level3 hasAnchor" number="1.3.4">
@@ -300,7 +330,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="basic-control-files-and-batch-processing.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="generating-control-files.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

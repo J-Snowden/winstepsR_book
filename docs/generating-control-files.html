@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Generating Control Files | Automating Winsteps Output with winstepsR</title>
+  <meta name="description" content="This is a guide on how to use the R package winstepsR to automate file output from Winsteps." />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Generating Control Files | Automating Winsteps Output with winstepsR" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/images/cover.png" />
+  <meta property="og:description" content="This is a guide on how to use the R package winstepsR to automate file output from Winsteps." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Generating Control Files | Automating Winsteps Output with winstepsR" />
+  
+  <meta name="twitter:description" content="This is a guide on how to use the R package winstepsR to automate file output from Winsteps." />
+  <meta name="twitter:image" content="/images/cover.png" />
+
+<meta name="author" content="Jeffrey Snowden" />
+
+
+<meta name="date" content="2024-05-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction-basics.html"/>
+<link rel="next" href="winsteps_output.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">winstepsR Guide</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction-basics.html"><a href="introduction-basics.html"><i class="fa fa-check"></i><b>1</b> Introduction &amp; Basics</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction-basics.html"><a href="introduction-basics.html#install-from-github"><i class="fa fa-check"></i><b>1.1</b> Install from Github</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction-basics.html"><a href="introduction-basics.html#sample-data"><i class="fa fa-check"></i><b>1.2</b> Sample Data</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction-basics.html"><a href="introduction-basics.html#getting-started"><i class="fa fa-check"></i><b>1.3</b> Getting Started</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="introduction-basics.html"><a href="introduction-basics.html#creating-a-project-and-setting-your-working-directory"><i class="fa fa-check"></i><b>1.3.1</b> Creating a Project and Setting your working directory</a></li>
+<li class="chapter" data-level="1.3.2" data-path="introduction-basics.html"><a href="introduction-basics.html#loading-in-your-own-data"><i class="fa fa-check"></i><b>1.3.2</b> Loading in your own data</a></li>
+<li class="chapter" data-level="1.3.3" data-path="introduction-basics.html"><a href="introduction-basics.html#selecting-the-data-you-want-to-use"><i class="fa fa-check"></i><b>1.3.3</b> Selecting the data you want to use</a></li>
+<li class="chapter" data-level="1.3.4" data-path="introduction-basics.html"><a href="introduction-basics.html#dataset-requirements"><i class="fa fa-check"></i><b>1.3.4</b> Dataset Requirements</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="introduction-basics.html"><a href="introduction-basics.html#winstepsr-functions"><i class="fa fa-check"></i><b>1.4</b> winstepsR Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="generating-control-files.html"><a href="generating-control-files.html"><i class="fa fa-check"></i><b>2</b> Generating Control Files</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="generating-control-files.html"><a href="generating-control-files.html#r_control_file-basics"><i class="fa fa-check"></i><b>2.1</b> <code>r_control_file</code> Basics</a></li>
+<li class="chapter" data-level="2.2" data-path="generating-control-files.html"><a href="generating-control-files.html#optional-arguments"><i class="fa fa-check"></i><b>2.2</b> Optional Arguments</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="generating-control-files.html"><a href="generating-control-files.html#groups"><i class="fa fa-check"></i><b>2.2.1</b> groups</a></li>
+<li class="chapter" data-level="2.2.2" data-path="generating-control-files.html"><a href="generating-control-files.html#ifile"><i class="fa fa-check"></i><b>2.2.2</b> ifile</a></li>
+<li class="chapter" data-level="2.2.3" data-path="generating-control-files.html"><a href="generating-control-files.html#sfile"><i class="fa fa-check"></i><b>2.2.3</b> sfile</a></li>
+<li class="chapter" data-level="2.2.4" data-path="generating-control-files.html"><a href="generating-control-files.html#demographics"><i class="fa fa-check"></i><b>2.2.4</b> demographics</a></li>
+<li class="chapter" data-level="2.2.5" data-path="generating-control-files.html"><a href="generating-control-files.html#key"><i class="fa fa-check"></i><b>2.2.5</b> key</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="winsteps_output.html"><a href="winsteps_output.html"><i class="fa fa-check"></i><b>3</b> <code>winsteps_output</code></a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Automating Winsteps Output with winstepsR</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="generating-control-files" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Generating Control Files<a href="generating-control-files.html#generating-control-files" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="r_control_file-basics" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> <code>r_control_file</code> Basics<a href="generating-control-files.html#r_control_file-basics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The first function we will use is <code>r_control_file</code>, which takes a dataset in R and creates a WINSTEPS control text file in your working directory. The structure of the function looks like this:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="generating-control-files.html#cb9-1" tabindex="-1"></a>r_control_file <span class="ot">&lt;-</span> <span class="cf">function</span>(name, df, first_item, num_items, person_id_col, ..., </span>
+<span id="cb9-2"><a href="generating-control-files.html#cb9-2" tabindex="-1"></a>                           <span class="at">groups =</span> <span class="cn">NULL</span>, <span class="at">ifile =</span> <span class="cn">NULL</span>, <span class="at">sfile =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-3"><a href="generating-control-files.html#cb9-3" tabindex="-1"></a>                           <span class="at">demographics =</span> <span class="cn">NULL</span>, <span class="at">key =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<p><code>r_control_file</code> has 5 required arguments and 5 optional arguments, which we will cover later. The required arguments are:</p>
+<ul>
+<li><strong><code>name</code></strong>: The name you want to save the control file as. Because this is a string it must be enclosed in quotes.</li>
+<li><strong><code>df</code></strong>: An R data frame object containing your dataset.</li>
+<li><strong><code>first_item</code></strong>: The numeric column location of the first item in your dataset.</li>
+<li><strong><code>num_items</code></strong>: The number of items you want to add to the control file. These items must be in columns that follow the first item you specify.</li>
+<li><strong><code>person_id_col</code></strong>: The name of the column where person identifiers (IDs) are located. Because this is a string it must be enclosed in quotes.</li>
+</ul>
+<p>Using our sample data, running the function looks like this:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="generating-control-files.html#cb10-1" tabindex="-1"></a><span class="fu">r_control_file</span>(<span class="st">&quot;dicot&quot;</span>, dicot, <span class="dv">2</span>, <span class="dv">5</span>, <span class="st">&quot;ID&quot;</span>)</span></code></pre></div>
+<p>Here, we have named the control file <code>"dicot"</code> and used the existing R data <code>dicot</code>. The control file name can be different from the R data, but naming it the same can avoid confusion later. The number <code>2</code> tells the function that the first item appears in the second column while the <code>5</code> tells the function that there are five items. <code>"ID"</code> tells the function that the identifier column is named “ID”.</p>
+<p>Upon running this function a new control file is generated in your working directory named <code>dicot_cf_r.txt</code>. This control file can be loaded manually using WINSTEPS and works as if you had created the file manually through Winsteps.</p>
+<p>Optional arguments that let you create more complex and customized control files are cover in a later chapter.</p>
+</div>
+<div id="optional-arguments" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Optional Arguments<a href="generating-control-files.html#optional-arguments" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The <code>r_control_file</code> function has 5 optional arguments you can use to create more customized control files.</p>
+<div id="groups" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> groups<a href="generating-control-files.html#groups" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>groups</code> argument passed to the function changes the ISGROUPS line of the control file. The ISGROUPS line in the control file allows you to specify groups within your data, enabling targeted analysis and comparison across different subsets. For more detailed information, you can refer to Section 11.86, “ISGROUPS= or GROUPS= assigns items to rating scale groupings,” in the <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf#page=173" target="_blank">Winsteps manual</a> <span class="citation">(<a href="#ref-winstepsManual">Linacre 2023</a>)</span>.</p>
+<p>For example, if our data set has both dichotomous and polytomous data we need to separate them in groups so they are analyzed with different scales.</p>
+<p>Using our sample data we can select sets of items that are both dichotomous and polytomous.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="generating-control-files.html#cb11-1" tabindex="-1"></a>mixed_data <span class="ot">&lt;-</span> sampledata <span class="sc">%&gt;%</span> <span class="fu">select</span>(ID, Dicot_1<span class="sc">:</span>Dicot_5, Likert_1<span class="sc">:</span>Likert_5)</span></code></pre></div>
+<p>Our new dataframe, mixed_data, contains two types of data that we want to run on different scales within the same Rasch model. To achieve this, we need to use the groups argument in the r_control_file function.</p>
+<p>The groups argument must be formatted in a specific way. Each item is assigned to a group using the format “item_range group_number”. For example, “1-5 1” indicates that items 1 to 5 belong to group 1 while “6-10 2” indicates that items 6 to 10 belong to group 2.</p>
+<p>The function now looks like this:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="generating-control-files.html#cb12-1" tabindex="-1"></a><span class="fu">r_control_file</span>(<span class="st">&quot;mixed_data&quot;</span>, mixed_data, <span class="dv">2</span>, <span class="dv">10</span>, <span class="st">&quot;ID&quot;</span>, </span>
+<span id="cb12-2"><a href="generating-control-files.html#cb12-2" tabindex="-1"></a>               <span class="at">groups =</span> <span class="fu">c</span>(<span class="st">&quot;1-5 1&quot;</span>, <span class="st">&quot;6-10 2&quot;</span>))</span></code></pre></div>
+<p>In the control file this adds the following:</p>
+<pre><code>ISGROUPS = *
+1-5 1
+6-10 2
+*</code></pre>
+<p>You can verify that it is correctly applied by examining table 3.2 to see the different group scales.</p>
+</div>
+<div id="ifile" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> ifile<a href="generating-control-files.html#ifile" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>An Item Output File, or ifile, is a file that contains the calibration information for each item. Chapter 3 details how to generate an ifile, but this step assumes you already have one created. For more detailed information, you can refer to Section 11.73 IFILE= item output file, in the <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf#page=153" target="_blank">Winsteps manual</a> <span class="citation">(<a href="#ref-winstepsManual">Linacre 2023</a>)</span>.</p>
+<p>When passed to the <code>r_control_file</code> function, the ifile acts as an anchoring file by adding the IAFILE line to the control file. Anchoring involves fixing the parameters of items to set values for the analysis. An example is creating an ifile from post test measures and using it to anchor the item difficulties of a pretest to the post test values. For more detailed information, you can refer to 11.65 IAFILE= item anchor file, in the <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf#page=141" target="_blank">Winsteps manual</a> <span class="citation">(<a href="#ref-winstepsManual">Linacre 2023</a>)</span>.</p>
+<p>The following code assumes that you have a ifile named “dicot_post_ifile.txt” in the working directory.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="generating-control-files.html#cb14-1" tabindex="-1"></a><span class="fu">r_control_file</span>(<span class="st">&quot;dicot_cf_r.txt&quot;</span>, dicot, <span class="dv">2</span>, <span class="dv">5</span>, <span class="st">&quot;ID&quot;</span>, </span>
+<span id="cb14-2"><a href="generating-control-files.html#cb14-2" tabindex="-1"></a>               <span class="at">ifile =</span> <span class="st">&quot;dicot_post_ifile.txt&quot;</span>)</span></code></pre></div>
+<p>In the control file this adds the following:</p>
+<pre><code>IAFILE = dicot_post_ifile.txt</code></pre>
+<p>Now when an analysis is run using the control file the values of all the items will be anchored to the values in the ifile. You can verify this by examining Table 10 and looking for an A next to the measure value under “JMLE MEASURE” and the new “DISPLACE” column that shows the displacement between the current measure values and the anchored values.</p>
+</div>
+<div id="sfile" class="section level3 hasAnchor" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> sfile<a href="generating-control-files.html#sfile" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>An Item-structure Output File, or sfile, is a file that contains the category structure-threshold values for each item. Chapter 3 details how to generate an sfile, but this step assumes you already have one created. For more detailed information, you can refer to Section 11.174 SFILE= category structure-threshold output file, in the <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf#page=264" target="_blank">Winsteps manual</a> <span class="citation">(<a href="#ref-winstepsManual">Linacre 2023</a>)</span>.</p>
+<p>When passed to the <code>r_control_file</code> function, the sfile acts as an anchoring file by adding the SAFILE line to the control file. <strong>When anchoring polytomous data using a rating scale model you must use both an ifile and sfile to anchor both the item vales and the category structure-threshold values.</strong></p>
+<p>The following code assumes that you have an ifile named “dicot_post_ifile.txt” and an sfile named “dicot_post_sfile.txt” in the working directory.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="generating-control-files.html#cb16-1" tabindex="-1"></a><span class="fu">r_control_file</span>(<span class="st">&quot;dicot_cf_r.txt&quot;</span>, dicot, <span class="dv">2</span>, <span class="dv">5</span>, <span class="st">&quot;ID&quot;</span>,</span>
+<span id="cb16-2"><a href="generating-control-files.html#cb16-2" tabindex="-1"></a>               <span class="at">ifile =</span> <span class="st">&quot;dicot_post_ifile.txt&quot;</span>,</span>
+<span id="cb16-3"><a href="generating-control-files.html#cb16-3" tabindex="-1"></a>               <span class="at">sfile =</span> <span class="st">&quot;dicot_post_sfile.txt&quot;</span>)</span></code></pre></div>
+<p>In the control file this adds the following:</p>
+<pre><code>IAFILE = dicot_post_ifile.txt
+SAFILE = dicot_post_sfile.txt</code></pre>
+<p>Now when an analysis is run using the control file the values of all the items will be anchored to the values in the ifile and the category structure-threshold values will be anchored to the values in the sfile. You can verify the sfile is working by examining Table 3.2 and ADD TEXT HERE.</p>
+</div>
+<div id="demographics" class="section level3 hasAnchor" number="2.2.4">
+<h3><span class="header-section-number">2.2.4</span> demographics<a href="generating-control-files.html#demographics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="key" class="section level3 hasAnchor" number="2.2.5">
+<h3><span class="header-section-number">2.2.5</span> key<a href="generating-control-files.html#key" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-winstepsManual" class="csl-entry">
+Linacre, John M. 2023. <em>Winsteps® Rasch Measurement Computer Program User’s Guide</em>. Version 5.7.2. Portland, Oregon: Winsteps.com. <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf">https://www.winsteps.com/a/Winsteps-Manual.pdf</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-basics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="winsteps_output.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -9,6 +9,12 @@ spss
 selecting-the-data-you-want-to-use
 dataset-requirements
 winstepsr-functions
-basic-control-files-and-batch-processing
-r_control_file
+generating-control-files
+r_control_file-basics
+optional-arguments
+groups
+ifile
+sfile
+demographics
+key
 winsteps_output

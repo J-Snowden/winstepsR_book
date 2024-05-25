@@ -113,10 +113,10 @@ dicot <- sampledata %>% select(ID, Dicot1:Dicot8)
 
 `dicot <- sampledata %>%`: This line creates a new dataset called `dicot` from the existing dataset `sampledata.` The %>% symbol is known as the "pipe" operator and is used to pass the data from the left-hand side to the function on the right-hand side.
 
-`select(ID, Dicot1:Dicot8)`: This part of the code is used to select specific columns from the dataset. The select function from the dplyr package allows you to specify which columns you want to keep in the new dataset:
+`select(ID, Dicot1:Dicot5)`: This part of the code is used to select specific columns from the dataset. The select function from the dplyr package allows you to specify which columns you want to keep in the new dataset:
 
 - **ID**: Selects the column named ID.
-- **Dicot1:Dicot8**: Selects all columns from Dicot1 to Dicot8.
+- **Dicot1:Dicot5**: Selects all columns from Dicot1 to Dicot5.
 
 ### Dataset Requirements
 
