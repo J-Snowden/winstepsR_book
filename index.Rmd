@@ -15,7 +15,7 @@ link-citations: yes
 github-repo: rstudio/bookdown-demo
 ---
 
-```{r setup, include=FALSE}
+# ```{r setup, include=FALSE}
 library(winstepsR) 
 ```
 

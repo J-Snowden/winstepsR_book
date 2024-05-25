@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Introduction &amp; Basics | A Guide On How To Use winstepsR</title>
+  <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Introduction &amp; Basics | A Guide On How To Use winstepsR" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Introduction &amp; Basics | A Guide On How To Use winstepsR" />
+  
+  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  
+
+<meta name="author" content="Jeffrey Snowden" />
+
+
+<meta name="date" content="2024-05-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="getting-started-with-winsteps-control-files-and-batch-processing.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> <code>{r setup, include=FALSE} library(winstepsR)</code></a></li>
+<li class="chapter" data-level="2" data-path="introduction-basics.html"><a href="introduction-basics.html"><i class="fa fa-check"></i><b>2</b> Introduction &amp; Basics</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction-basics.html"><a href="introduction-basics.html#install-from-github"><i class="fa fa-check"></i><b>2.1</b> Install from Github</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction-basics.html"><a href="introduction-basics.html#sample-data"><i class="fa fa-check"></i><b>2.2</b> Sample Data</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction-basics.html"><a href="introduction-basics.html#getting-started"><i class="fa fa-check"></i><b>2.3</b> Getting Started</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="introduction-basics.html"><a href="introduction-basics.html#creating-a-project-and-setting-your-working-directory"><i class="fa fa-check"></i><b>2.3.1</b> Creating a Project and Setting your working directory</a></li>
+<li class="chapter" data-level="2.3.2" data-path="introduction-basics.html"><a href="introduction-basics.html#loading-in-your-own-data"><i class="fa fa-check"></i><b>2.3.2</b> Loading in your own data</a></li>
+<li class="chapter" data-level="2.3.3" data-path="introduction-basics.html"><a href="introduction-basics.html#selecting-the-data-you-want-to-use"><i class="fa fa-check"></i><b>2.3.3</b> Selecting the data you want to use</a></li>
+<li class="chapter" data-level="2.3.4" data-path="introduction-basics.html"><a href="introduction-basics.html#dataset-requirements"><i class="fa fa-check"></i><b>2.3.4</b> Dataset Requirements</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="introduction-basics.html"><a href="introduction-basics.html#winstepsr-functions"><i class="fa fa-check"></i><b>2.4</b> winstepsR Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="getting-started-with-winsteps-control-files-and-batch-processing.html"><a href="getting-started-with-winsteps-control-files-and-batch-processing.html"><i class="fa fa-check"></i><b>3</b> Getting Started with Winsteps Control Files and Batch Processing</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="getting-started-with-winsteps-control-files-and-batch-processing.html"><a href="getting-started-with-winsteps-control-files-and-batch-processing.html#r_control_file"><i class="fa fa-check"></i><b>3.1</b> <code>r_control_file</code></a></li>
+<li class="chapter" data-level="3.2" data-path="getting-started-with-winsteps-control-files-and-batch-processing.html"><a href="getting-started-with-winsteps-control-files-and-batch-processing.html#winsteps_output"><i class="fa fa-check"></i><b>3.2</b> <code>winsteps_output</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="winsteps_output-1.html"><a href="winsteps_output-1.html"><i class="fa fa-check"></i><b>4</b> <code>winsteps_output</code></a></li>
+<li class="chapter" data-level="5" data-path="parts.html"><a href="parts.html"><i class="fa fa-check"></i><b>5</b> Parts</a></li>
+<li class="chapter" data-level="6" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html"><i class="fa fa-check"></i><b>6</b> Footnotes and citations</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html#footnotes"><i class="fa fa-check"></i><b>6.1</b> Footnotes</a></li>
+<li class="chapter" data-level="6.2" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html#citations"><i class="fa fa-check"></i><b>6.2</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="blocks.html"><a href="blocks.html"><i class="fa fa-check"></i><b>7</b> Blocks</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="blocks.html"><a href="blocks.html#equations"><i class="fa fa-check"></i><b>7.1</b> Equations</a></li>
+<li class="chapter" data-level="7.2" data-path="blocks.html"><a href="blocks.html#theorems-and-proofs"><i class="fa fa-check"></i><b>7.2</b> Theorems and proofs</a></li>
+<li class="chapter" data-level="7.3" data-path="blocks.html"><a href="blocks.html#callout-blocks"><i class="fa fa-check"></i><b>7.3</b> Callout blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="sharing-your-book.html"><a href="sharing-your-book.html"><i class="fa fa-check"></i><b>8</b> Sharing your book</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="sharing-your-book.html"><a href="sharing-your-book.html#publishing"><i class="fa fa-check"></i><b>8.1</b> Publishing</a></li>
+<li class="chapter" data-level="8.2" data-path="sharing-your-book.html"><a href="sharing-your-book.html#pages"><i class="fa fa-check"></i><b>8.2</b> 404 pages</a></li>
+<li class="chapter" data-level="8.3" data-path="sharing-your-book.html"><a href="sharing-your-book.html#metadata-for-sharing"><i class="fa fa-check"></i><b>8.3</b> Metadata for sharing</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Guide On How To Use winstepsR</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduction-basics" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Introduction &amp; Basics<a href="introduction-basics.html#introduction-basics" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Welcome to the user guide for the <code>winstepsR</code> package. This guide will show you how to install and use the package step by step.</p>
+<div id="install-from-github" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Install from Github<a href="introduction-basics.html#install-from-github" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>winstepsR</code> is currently hosted on Github. To download it you first need to install the <code>remotes</code> package and load it into your library.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="introduction-basics.html#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>)</span>
+<span id="cb1-2"><a href="introduction-basics.html#cb1-2" tabindex="-1"></a><span class="fu">library</span>(remotes)</span></code></pre></div>
+<p>Now you can use the <code>remotes</code> package to install <code>winstepsR</code> and add it to your library.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="introduction-basics.html#cb2-1" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;J-Snowden/winstepsR&quot;</span>)</span>
+<span id="cb2-2"><a href="introduction-basics.html#cb2-2" tabindex="-1"></a><span class="fu">library</span>(winstepsR)</span></code></pre></div>
+<p>In future sessions, after you have installed the package, you will only need to load it into your library using <code>library(winstepsR)</code>. However, if the package has been updated you will need to install it again using <code>remotes::install_github("J-Snowden/winstepsR")</code>.</p>
+</div>
+<div id="sample-data" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Sample Data<a href="introduction-basics.html#sample-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The package includes a sample data set with randomly generated values which will be used for examples in this guide. The data set is named <code>sampledata</code>. You can see an what it looks like using <code>head(sampledata)</code> to see the first 10 rows:</p>
+<pre><code>##   ID Dicot_1 Dicot_2 Dicot_3 Dicot_4 Dicot_5 Likert_1 Likert_2 Likert_3 Likert_4 Likert_5 Likert10_1 Likert10_2 Likert10_3 Likert10_4
+## 1  1       1       1       0       0       1        2        4        2        3        4          3          6          6          7
+## 2  2       1       1       0       1       1        1        4        4        1        2          3          7          2          1
+## 3  3       0       1       0       0       1        1        2        1        1        2         10         10          1          2
+## 4  4       1       1       0       0       1        1        1        1        1        1          2          5          5          3
+## 5  5       1       1       0       1       1        3        3        3        3        2          6          6          9          3
+## 6  6       1       0       0       0       0        4        4        4        4        4          5          8          4          6
+##   Likert10_5 Demo_1 Demo_2
+## 1          5      0      1
+## 2          1      0      2
+## 3          7      1      1
+## 4          6      1      3
+## 5          8      1      3
+## 6          4      0      1</code></pre>
+<p><code>samepledata</code> includes three sets of items, one with dichotomous values (0, 1), one with Likert style responses with values ranging from 0 to 6, and one with Likert style responses ranging from 0 to 10. There are also two columns that represent demographic data for use when examining DIF.</p>
+</div>
+<div id="getting-started" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Getting Started<a href="introduction-basics.html#getting-started" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="creating-a-project-and-setting-your-working-directory" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Creating a Project and Setting your working directory<a href="introduction-basics.html#creating-a-project-and-setting-your-working-directory" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To start a new project in RStudio, go to <code>File</code> &gt; <code>New Project...</code> and follow the prompts to create a new directory for your project.</p>
+<p>Once your project is set up, you can use the <code>here</code> package to manage your working directory. This package helps you avoid issues with setting working directories manually.</p>
+<p>First, install and load the <code>here</code> package:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="introduction-basics.html#cb4-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;here&quot;</span>)</span>
+<span id="cb4-2"><a href="introduction-basics.html#cb4-2" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div>
+<p>Then, you can set your working directory using here::here(), which sets the working directory to the root of your project:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="introduction-basics.html#cb5-1" tabindex="-1"></a><span class="co"># Load the here package</span></span>
+<span id="cb5-2"><a href="introduction-basics.html#cb5-2" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb5-3"><a href="introduction-basics.html#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="introduction-basics.html#cb5-4" tabindex="-1"></a><span class="co"># Set the working directory to the root of your project</span></span>
+<span id="cb5-5"><a href="introduction-basics.html#cb5-5" tabindex="-1"></a><span class="fu">setwd</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;Rasch/Example&quot;</span>))</span></code></pre></div>
+<p>Using here::here() ensures that your file paths are always relative to the project root, making your code more robust and portable.</p>
+<p><strong>Important Note:</strong> When creating a folder to use with this package there cannot be any spaces in the folder name. Some functions use batch files with Winsteps to create files, and the process will fail if there are spaces in any folder names.</p>
+</div>
+<div id="loading-in-your-own-data" class="section level3 hasAnchor" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Loading in your own data<a href="introduction-basics.html#loading-in-your-own-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>You can load in your own data to R using various packages depending on the type of your data. Examples for Excel (.xlsx) and SPSS (.sav) are provided below.</p>
+<div id="excel" class="section level4 hasAnchor" number="2.3.2.1">
+<h4><span class="header-section-number">2.3.2.1</span> Excel<a href="introduction-basics.html#excel" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>First, you need to install the <code>readxl</code> package if you haven’t already:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="introduction-basics.html#cb6-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;readxl&quot;</span>)</span>
+<span id="cb6-2"><a href="introduction-basics.html#cb6-2" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code></pre></div>
+<p>After installing the package, you can use the <code>read_excel</code> function to read data from an Excel file. Here’s an example:</p>
+<p>Replace <code>'path/to/your/file.xlsx'</code> with the actual path to your Excel file:</p>
+<p><code>excel_data &lt;- read_excel("path/to/your/file.xlsx")</code></p>
+</div>
+<div id="spss" class="section level4 hasAnchor" number="2.3.2.2">
+<h4><span class="header-section-number">2.3.2.2</span> SPSS<a href="introduction-basics.html#spss" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>To load data from SPSS .sav files, we can use the <code>haven</code> package, which provides functions to read data from various formats, including SPSS, Stata, and SAS.</p>
+<p>First, you need to install the <code>haven</code> package if you haven’t already:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="introduction-basics.html#cb7-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;haven&quot;</span>)</span>
+<span id="cb7-2"><a href="introduction-basics.html#cb7-2" tabindex="-1"></a><span class="fu">library</span>(haven)</span></code></pre></div>
+<p>After installing the package, you can use the <code>read_sav</code> function to read data from an SAV file. Here’s an example:</p>
+<p>Replace <code>'path/to/your/file.sav'</code> with the actual path to your SAV file:</p>
+<p><code>sav_data &lt;- read_sav("path/to/your/file.sav")</code></p>
+</div>
+</div>
+<div id="selecting-the-data-you-want-to-use" class="section level3 hasAnchor" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Selecting the data you want to use<a href="introduction-basics.html#selecting-the-data-you-want-to-use" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To select specific columns from your dataset, you can use the <code>dplyr</code> package with is included with the <code>tidyverse</code> package. This package provides a set of functions that are designed to make data manipulation easy and intuitive.</p>
+<p>For our first example we will use the dichotomous items from the <code>sampledata</code> dataset.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="introduction-basics.html#cb8-1" tabindex="-1"></a>dicot <span class="ot">&lt;-</span> sampledata <span class="sc">%&gt;%</span> <span class="fu">select</span>(ID, Dicot1<span class="sc">:</span>Dicot8)</span></code></pre></div>
+<p><code>dicot &lt;- sampledata %&gt;%</code>: This line creates a new dataset called <code>dicot</code> from the existing dataset <code>sampledata.</code> The %&gt;% symbol is known as the “pipe” operator and is used to pass the data from the left-hand side to the function on the right-hand side.</p>
+<p><code>select(ID, Dicot1:Dicot8)</code>: This part of the code is used to select specific columns from the dataset. The select function from the dplyr package allows you to specify which columns you want to keep in the new dataset:</p>
+<ul>
+<li><strong>ID</strong>: Selects the column named ID.</li>
+<li><strong>Dicot1:Dicot8</strong>: Selects all columns from Dicot1 to Dicot8.</li>
+</ul>
+</div>
+<div id="dataset-requirements" class="section level3 hasAnchor" number="2.3.4">
+<h3><span class="header-section-number">2.3.4</span> Dataset Requirements<a href="introduction-basics.html#dataset-requirements" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To run functions within <code>winstepsR</code>, your dataset needs to meet certain requirements. Specifically, the dataset should have:</p>
+<ol style="list-style-type: decimal">
+<li><strong>An identifier column</strong>: This column should contain unique identifiers for each row of data (e.g., participant IDs).</li>
+<li><strong>Numeric data columns</strong>: Data you want to process needs to be whole numeric values ranging from 0 to 99. Values larger than 2 digits or with decimals are not currently supported.</li>
+</ol>
+<p>Ensuring your dataset is structured in this way will allow the functions within <code>winstepsR</code> to operate correctly.</p>
+</div>
+</div>
+<div id="winstepsr-functions" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> winstepsR Functions<a href="introduction-basics.html#winstepsr-functions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Currently, the <code>winstepsR</code> package has five functions. The first two interface with Winsteps to run analyses and output files. The remaining three work with Winsteps output files in R to process or clean data for further use.</p>
+<ul>
+<li><strong><code>r_control_file</code></strong>: Creates a Winsteps control file using data in R.</li>
+<li><strong><code>winsteps_output</code></strong>: Uses Winsteps batch processing to output tables and files.</li>
+<li><strong><code>filter_zresid</code></strong>: Uses a Winsteps observation file to filter out unexpected responses based on Z-residual values.</li>
+<li><strong><code>clean_dif</code></strong>: Cleans Winsteps DIF files to only show significant DIF.</li>
+<li><strong><code>psychometrics_table</code></strong>: Processes Winsteps tables and person files into an organized psychometrics table.</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="getting-started-with-winsteps-control-files-and-batch-processing.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
