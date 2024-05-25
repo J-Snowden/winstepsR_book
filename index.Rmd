@@ -1,0 +1,161 @@
+--- 
+title: "A Guide On How To Use winstepsR"
+author: "Jeffrey Snowden"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  This is a minimal example of using the bookdown package to write a book.
+  The HTML output format for this example is bookdown::gitbook,
+  set in the _output.yml file.
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+---
+
+```{r setup, include=FALSE}
+library(winstepsR) 
+```
+
+# Introduction & Basics
+
+Welcome to the user guide for the `winstepsR` package. This guide will show you how to install and use the package step by step.
+
+## Install from Github
+
+`winstepsR` is currently hosted on Github. To download it you first need to install the `remotes` package and load it into your library.
+
+```{r eval=FALSE}
+install.packages("remotes")
+library(remotes)
+```
+
+Now you can use the `remotes` package to install `winstepsR` and add it to your library.
+
+```{r eval=FALSE}
+remotes::install_github("J-Snowden/winstepsR")
+library(winstepsR)
+```
+
+In future sessions, after you have installed the package, you will only need to load it into your library using `library(winstepsR)`. However, if the package has been updated you will need to install it again using `remotes::install_github("J-Snowden/winstepsR")`.
+
+## Sample Data
+
+The package includes a sample data set with randomly generated values which will be used for examples in this guide. The data set is named `sampledata`. You can see an what it looks like using `head(sampledata)` to see the first 10 rows:
+
+```{r echo=FALSE}
+head(sampledata)
+```
+
+`samepledata` includes three sets of items, one with dichotomous values (0, 1), one with Likert style responses with values ranging from 0 to 6, and one with Likert style responses ranging from 0 to 10. There are also two columns that represent demographic data for use when examining DIF.
+
+## Getting Started
+
+### Creating a Project and Setting your working directory
+
+To start a new project in RStudio, go to `File` > `New Project...` and follow the prompts to create a new directory for your project. 
+
+Once your project is set up, you can use the `here` package to manage your working directory. This package helps you avoid issues with setting working directories manually.
+
+First, install and load the `here` package:
+
+```{r, eval=FALSE}
+install.packages("here")
+library(here)
+```
+
+Then, you can set your working directory using here::here(), which sets the working directory to the root of your project:
+
+```{r, eval=FALSE}
+# Load the here package
+library(here)
+
+# Set the working directory to the root of your project
+setwd(here::here("Rasch/Example"))
+```
+
+Using here::here() ensures that your file paths are always relative to the project root, making your code more robust and portable.
+
+**Important Note:** When creating a folder to use with this package there cannot be any spaces in the folder name. Some functions use batch files with Winsteps to create files, and the process will fail if there are spaces in any folder names.
+
+### Loading in your own data
+
+You can load in your own data to R using various packages depending on the type of your data. Examples for Excel (.xlsx) and SPSS (.sav) are provided below.
+
+#### Excel
+
+First, you need to install the `readxl` package if you haven't already:
+
+```{r, eval=FALSE}
+install.packages("readxl")
+library(readxl)
+```
+
+After installing the package, you can use the `read_excel` function to read data from an Excel file. Here's an example:
+
+Replace `'path/to/your/file.xlsx'` with the actual path to your Excel file:
+
+`excel_data <- read_excel("path/to/your/file.xlsx")`
+
+#### SPSS
+
+To load data from SPSS .sav files, we can use the `haven` package, which provides functions to read data from various formats, including SPSS, Stata, and SAS.
+
+First, you need to install the `haven` package if you haven't already:
+
+```{r, eval=FALSE}
+install.packages("haven")
+library(haven)
+```
+
+After installing the package, you can use the `read_sav` function to read data from an SAV file. Here's an example:
+
+Replace `'path/to/your/file.sav'` with the actual path to your SAV file:
+
+`sav_data <- read_sav("path/to/your/file.sav")`
+
+### Selecting the data you want to use
+
+To select specific columns from your dataset, you can use the `dplyr` package with is included with the `tidyverse` package. This package provides a set of functions that are designed to make data manipulation easy and intuitive.
+
+For our first example we will use the dichotomous items from the `sampledata` dataset.
+
+```{r, eval=FALSE}
+dicot <- sampledata %>% select(ID, Dicot1:Dicot8)
+```
+
+
+`dicot <- sampledata %>%`: This line creates a new dataset called `dicot` from the existing dataset `sampledata.` The %>% symbol is known as the "pipe" operator and is used to pass the data from the left-hand side to the function on the right-hand side.
+
+`select(ID, Dicot1:Dicot8)`: This part of the code is used to select specific columns from the dataset. The select function from the dplyr package allows you to specify which columns you want to keep in the new dataset:
+
+- **ID**: Selects the column named ID.
+- **Dicot1:Dicot8**: Selects all columns from Dicot1 to Dicot8.
+
+### Dataset Requirements
+
+To run functions within `winstepsR`, your dataset needs to meet certain requirements. Specifically, the dataset should have:
+
+1. **An identifier column**: This column should contain unique identifiers for each row of data (e.g., participant IDs).
+2. **Numeric data columns**: Data you want to process needs to be whole numeric values ranging from 0 to 99. Values larger than 2 digits or with decimals are not currently supported.
+
+Ensuring your dataset is structured in this way will allow the functions within `winstepsR` to operate correctly.
+
+## winstepsR Functions
+
+Currently, the `winstepsR` package has five functions. The first two interface with Winsteps to run analyses and output files. The remaining three work with Winsteps output files in R to process or clean data for further use.
+
+- **`r_control_file`**: Creates a Winsteps control file using data in R.
+- **`winsteps_output`**: Uses Winsteps batch processing to output tables and files.
+- **`filter_zresid`**: Uses a Winsteps observation file to filter out unexpected responses based on Z-residual values.
+- **`clean_dif`**: Cleans Winsteps DIF files to only show significant DIF.
+- **`psychometrics_table`**: Processes Winsteps tables and person files into an organized psychometrics table.
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```

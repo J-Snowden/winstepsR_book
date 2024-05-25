@@ -1,0 +1,45 @@
+# `winsteps_output`
+
+This function uses a WINSTEPS control file, created using this package or  created manually, to automatically create and save WINSTEPS output files. It does by creating, running, then deleting a batch file. A batch file is a script that automates the execution of commands in sequence. With Winsteps, batch files enable running multiple analyses with minimal user interaction to run tasks in the background. More information can be found on the Winsteps website at [Winsteps Batch Processing documentation](https://www.winsteps.com/winman/batch.htm).
+
+
+```{r, eval=FALSE}
+winsteps_output <- function(ctrlfile, shortname, ..., tables = NULL,
+                            files = NULL, dif = NULL, ifile = NULL,
+                            sfile = NULL)
+```
+
+`winsteps_output` has 2 required arguments and 5 optional arguments. The required arguments are:
+
+- **`ctrlfile`**: This is the name of the control file, it needs to include the filetype at the end (.txt).
+- **`shortname`**: This is the name you want all of the output files to have, I often set it to the same name as the data.
+
+The optional arguments specific which files you want Winsteps to create. You can run the function without an optional argument but nothing will be saved. 
+
+- **`tables`**: The tables you want to be saved. In Winsteps these are found under the Output Tables menu. You can find an index of tables on [the Winsteps website](https://www.winsteps.com/winman/outputtableindex.htm){target="_blank"}.
+- **`tables`**: The files you want to be saved. Desired files need to be enclosed in quotes, ex: `"xfile"`. In Winsteps these are found under the Output Files menu. You can find an index of files on [the Winsteps website](https://www.winsteps.com/winman/outputfileindex.htm){target="_blank"}.
+- **`dif`**: Column names for DIF files you want to output. (This will be covered in more depth in another section).
+- **`ifile`**: File name for an anchoring IFILE you want to be used in processing the tables or files (This will be covered in more depth in another section).
+- **`sfile`**: File name for an anchoring SFILE you want to be used in processing the tables or files (This will be covered in more depth in another section).
+
+If you only want one table or file to be created you can run the function with arguments like `tables = 3` or `files = "xfile"`. However, if you want multiple tales or files you need to specify them inside a `c()` function, which combines multiple elements into a vector. For example, to create multiple tables, you would use `tables = c(3, 10, 12, 14, 23)`, and to create multiple files, you would use `files = c("pfile", "xfile")`. This tells the function to generate all specified tables or files.
+
+Using our sample data, running the function looks like this:
+
+```{r, eval=FALSE}
+winsteps_output("dicot_cf_r.txt", "dicot", tables = c(3, 10, 12, 14, 23),
+                files = c("pfile", "xfile"))
+```
+
+Inside your working directory the function creates and runs a batch file. In the R console you can see the commands the batch file is running. 
+
+```
+C:\Users\sample_user\Desktop\sample_project>START
+/w C:\winsteps\WINSTEPS BATCH=YES
+C:/Users/sample_user/Desktop/sample_project/dicot_cf_r.txt
+C:/Users/sample_user/Desktop/sample_project/dicot_Table_3.txt TABLES=001
+```
+
+It first uses your working directory as a starting place and tells Winsteps it is going to use batch processing. It then tells Winsteps to open the requested control file, then to save table 001, or table 3, as dicot_Table_3.txt.
+
+Once the batch file has finished processing it deletes itself. After running this command we now have 5 tables saved at text files and a person file and observation file saved as Excel files.
