@@ -10,13 +10,13 @@ description: |
   This is a guide on how to use the R package winstepsR to automate file output from Winsteps.
 link-citations: yes
 github-repo: rstudio/bookdown-demo
-cover-image: images/cover.png
+cover-image: images/cover.jpg
 ---
 
 # Preface {-}
 
 ```{r fig.align='center', echo=FALSE}
-knitr::include_graphics('images/cover.png', dpi = NA)
+knitr::include_graphics('images/cover.jpg', dpi = NA)
 ```
 
 Welcome to "Automating Winsteps Output with winstepsR." This book provides a comprehensive guide to using the `winstepsR` package to automate the generation of output files from Winsteps. In the following chapters, you will learn how to create control files, process  datasets, and generate extensive output files without manually opening Winsteps.
