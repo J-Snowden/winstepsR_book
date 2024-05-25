@@ -3,7 +3,7 @@
     "path": "C:/Users/jsnowden/Desktop/winstepsR_book/index.Rmd",
     "project_path": "index.Rmd",
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "158235393",
     "contents": "",
     "dirty": false,
     "created": 1716587541297.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "5,19",
+        "cursorPosition": "17,0",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1716652231,
+    "lastKnownWriteTime": 1716652333,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1716652231300,
+    "last_content_update": 1716652333385,
     "read_only": false,
     "read_only_alternatives": []
 }

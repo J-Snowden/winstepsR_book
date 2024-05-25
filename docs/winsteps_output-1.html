@@ -4,13 +4,13 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | A Guide On How To Use winstepsR</title>
+  <title>Chapter 3 winsteps_output | A Guide On How To Use winstepsR</title>
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | A Guide On How To Use winstepsR" />
+  <meta property="og:title" content="Chapter 3 winsteps_output | A Guide On How To Use winstepsR" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
@@ -19,7 +19,7 @@ set in the _output.yml file.</p>" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | A Guide On How To Use winstepsR" />
+  <meta name="twitter:title" content="Chapter 3 winsteps_output | A Guide On How To Use winstepsR" />
   
   <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
@@ -36,8 +36,8 @@ set in the _output.yml file.</p>" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-
+<link rel="prev" href="getting-started-with-winsteps-control-files-and-batch-processing.html"/>
+<link rel="next" href="parts.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -226,19 +226,45 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="winsteps_output-1" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> <code>winsteps_output</code><a href="winsteps_output-1.html#winsteps_output-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This function uses a WINSTEPS control file, created using this package or created manually, to automatically create and save WINSTEPS output files. It does by creating, running, then deleting a batch file. A batch file is a script that automates the execution of commands in sequence. With Winsteps, batch files enable running multiple analyses with minimal user interaction to run tasks in the background. More information can be found on the Winsteps website at <a href="https://www.winsteps.com/winman/batch.htm">Winsteps Batch Processing documentation</a>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="winsteps_output-1.html#cb14-1" tabindex="-1"></a>winsteps_output <span class="ot">&lt;-</span> <span class="cf">function</span>(ctrlfile, shortname, ..., <span class="at">tables =</span> <span class="cn">NULL</span>,</span>
+<span id="cb14-2"><a href="winsteps_output-1.html#cb14-2" tabindex="-1"></a>                            <span class="at">files =</span> <span class="cn">NULL</span>, <span class="at">dif =</span> <span class="cn">NULL</span>, <span class="at">ifile =</span> <span class="cn">NULL</span>,</span>
+<span id="cb14-3"><a href="winsteps_output-1.html#cb14-3" tabindex="-1"></a>                            <span class="at">sfile =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<p><code>winsteps_output</code> has 2 required arguments and 5 optional arguments. The required arguments are:</p>
+<ul>
+<li><strong><code>ctrlfile</code></strong>: This is the name of the control file, it needs to include the filetype at the end (.txt).</li>
+<li><strong><code>shortname</code></strong>: This is the name you want all of the output files to have, I often set it to the same name as the data.</li>
+</ul>
+<p>The optional arguments specific which files you want Winsteps to create. You can run the function without an optional argument but nothing will be saved.</p>
+<ul>
+<li><strong><code>tables</code></strong>: The tables you want to be saved. In Winsteps these are found under the Output Tables menu. You can find an index of tables on <a href="https://www.winsteps.com/winman/outputtableindex.htm" target="_blank">the Winsteps website</a>.</li>
+<li><strong><code>tables</code></strong>: The files you want to be saved. Desired files need to be enclosed in quotes, ex: <code>"xfile"</code>. In Winsteps these are found under the Output Files menu. You can find an index of files on <a href="https://www.winsteps.com/winman/outputfileindex.htm" target="_blank">the Winsteps website</a>.</li>
+<li><strong><code>dif</code></strong>: Column names for DIF files you want to output. (This will be covered in more depth in another section).</li>
+<li><strong><code>ifile</code></strong>: File name for an anchoring IFILE you want to be used in processing the tables or files (This will be covered in more depth in another section).</li>
+<li><strong><code>sfile</code></strong>: File name for an anchoring SFILE you want to be used in processing the tables or files (This will be covered in more depth in another section).</li>
+</ul>
+<p>If you only want one table or file to be created you can run the function with arguments like <code>tables = 3</code> or <code>files = "xfile"</code>. However, if you want multiple tales or files you need to specify them inside a <code>c()</code> function, which combines multiple elements into a vector. For example, to create multiple tables, you would use <code>tables = c(3, 10, 12, 14, 23)</code>, and to create multiple files, you would use <code>files = c("pfile", "xfile")</code>. This tells the function to generate all specified tables or files.</p>
+<p>Using our sample data, running the function looks like this:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="winsteps_output-1.html#cb15-1" tabindex="-1"></a><span class="fu">winsteps_output</span>(<span class="st">&quot;dicot_cf_r.txt&quot;</span>, <span class="st">&quot;dicot&quot;</span>, <span class="at">tables =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">23</span>),</span>
+<span id="cb15-2"><a href="winsteps_output-1.html#cb15-2" tabindex="-1"></a>                <span class="at">files =</span> <span class="fu">c</span>(<span class="st">&quot;pfile&quot;</span>, <span class="st">&quot;xfile&quot;</span>))</span></code></pre></div>
+<p>Inside your working directory the function creates and runs a batch file. In the R console you can see the commands the batch file is running.</p>
+<pre><code>C:\Users\sample_user\Desktop\sample_project&gt;START
+/w C:\winsteps\WINSTEPS BATCH=YES
+C:/Users/sample_user/Desktop/sample_project/dicot_cf_r.txt
+C:/Users/sample_user/Desktop/sample_project/dicot_Table_3.txt TABLES=001</code></pre>
+<p>It first uses your working directory as a starting place and tells Winsteps it is going to use batch processing. It then tells Winsteps to open the requested control file, then to save table 001, or table 3, as dicot_Table_3.txt.</p>
+<p>Once the batch file has finished processing it deletes itself. After running this command we now have 5 tables saved at text files and a person file and observation file saved as Excel files.</p>
+
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-
+<a href="getting-started-with-winsteps-control-files-and-batch-processing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="parts.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -269,7 +295,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/%s",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-winsteps_output.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -292,6 +318,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

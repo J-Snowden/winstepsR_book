@@ -1,7 +1,14 @@
 h1:url-your-book-url-like-httpsbookdown.orgyihuibookdown url: your book url like https://bookdown.org/yihui/bookdown
 h1:cover-image-path-to-the-social-sharing-image-like-imagescover.jpg cover-image: path to the social sharing image like images/cover.jpg
-h1:r-setup-includefalse ```{r setup, include=FALSE}
-h1:load-the-here-package Load the here package
-h1:set-the-working-directory-to-the-root-of-your-project Set the working directory to the root of your project
-h1:automatically-create-a-bib-database-for-r-packages automatically create a bib database for R packages
+h1:introduction-basics Introduction & Basics
+h2:install-from-github Install from Github
+h2:sample-data Sample Data
+h2:getting-started Getting Started
+h3:creating-a-project-and-setting-your-working-directory Creating a Project and Setting your working directory
+h3:loading-in-your-own-data Loading in your own data
+h4:excel Excel
+h4:spss SPSS
+h3:selecting-the-data-you-want-to-use Selecting the data you want to use
+h3:dataset-requirements Dataset Requirements
+h2:winstepsr-functions winstepsR Functions
 
