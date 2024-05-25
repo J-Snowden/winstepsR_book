@@ -1,6 +1,7 @@
 
 ```{r setup, include=FALSE}
 library(winstepsR) 
+library(tidyverse)
 ```
 
 # Introduction & Basics

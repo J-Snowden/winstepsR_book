@@ -42,7 +42,7 @@ For example, if our data set has both dichotomous and polytomous data we need to
 
 Using our sample data we can select sets of items that are both dichotomous and polytomous.
 
-```{r, eval=FALSE}
+```{r}
 mixed_data <- sampledata %>% select(ID, Dicot_1:Dicot_5, Likert_1:Likert_5)
 ```
 
@@ -78,7 +78,7 @@ When passed to the `r_control_file` function, the ifile acts as an anchoring fil
 The following code assumes that you have a ifile named "dicot_post_ifile.txt" in the working directory.
 
 ```{r, eval=FALSE}
-r_control_file("dicot_cf_r.txt", dicot, 2, 5, "ID", 
+r_control_file("dicot", dicot, 2, 5, "ID", 
                ifile = "dicot_post_ifile.txt")
 ```
 
@@ -99,7 +99,7 @@ When passed to the `r_control_file` function, the sfile acts as an anchoring fil
 The following code assumes that you have an ifile named "dicot_post_ifile.txt" and an sfile named "dicot_post_sfile.txt" in the working directory.
 
 ```{r, eval=FALSE}
-r_control_file("dicot_cf_r.txt", dicot, 2, 5, "ID",
+r_control_file("dicot", dicot, 2, 5, "ID",
                ifile = "dicot_post_ifile.txt",
                sfile = "dicot_post_sfile.txt")
 ```
@@ -111,8 +111,70 @@ IAFILE = dicot_post_ifile.txt
 SAFILE = dicot_post_sfile.txt
 ```
 
-Now when an analysis is run using the control file the values of all the items will be anchored to the values in the ifile and the category structure-threshold values will be anchored to the values in the sfile. You can verify the sfile is working by examining Table 3.2 and ADD TEXT HERE.
+Now when an analysis is run using the control file the values of all the items will be anchored to the values in the ifile and the category structure-threshold values will be anchored to the values in the sfile. You can verify the sfile is working by examining Table 3.2 and looking for an A under the ANDRICH THRESHOLD column indicating that the structure-threshold values are anchored.
 
 ### demographics
 
+The `demographics` argument passed to the function allows you to add demographic variables to the control file which can later be use in differential item functioning (DIF) analyses later.
+
+This argument needs a data frame with only demographic variables. The demographic data will be appended to the dataframe supplied in `df`, meaning the demographic dataframe needs to be the same length and sorted in the same way as the `df` data. This is easy to do if your original data file has all the data you will use.
+
+This example will use the `dicot` data frame we created earlier. To create the demographic data frame we will seperate it from our `sampledata` data set.
+
+```{r, eval=FALSE}
+dicot_demo <- sampledata %>% select(Demo_1, Demo_2)
+```
+
+Now that we have our demographic data in it's own data frame we can run the function. 
+
+```{r, eval=FALSE}
+r_control_file("dicot", dicot, 2, 5, "ID",
+               demographics = dicot_demo)
+```
+
+In the control file this adds the following:
+
+```
+@Demo_1 = 5E5 ;
+@Demo_2 = 7E7 ;
+```
+
+`@Demo_1` is the first demographic column name, `5E5` indicates that the value for this variable begins and ends on the 5th character space of the person identifier. Addtionally, the demographic values for each person are now displayed after their `ID`.
+
 ### key
+
+The `key` argument can be used to score multiple choice items, assigning a value of 1 to correct answers and a 0 to incorrect answers .For more detailed information, you can refer to 11.96 KEYn= scoring key, in the [Winsteps manual](https://www.winsteps.com/a/Winsteps-Manual.pdf#page=186){target="_blank"} [@winstepsManual].
+
+For this example we can use the previously created `mixed_data` data frame. For this purpose lets assume that the five Likert items are actually multiple choice questions with 6 answers. First, we can example the order of the columns in the data.
+
+```{r, echo=FALSE}
+colnames(mixed_data)
+```
+
+We can see that the dichotomous items come first, as they are already in values of either 0 or 1, we can assume that 1 is the correct answer. For the following five items lets assume that the correct answers are 3, 5, 2, 1, 5. Combining these, the correct answers for the full data set would be 1111135215. We can pass this information to the function using the `key` argument as follows:
+
+```{r, eval=FALSE}
+r_control_file("mixed_data", mixed_data, 2, 10, "ID", 
+               key = "1111135215")
+```
+
+In the control file this adds the following:
+
+```
+KEY = 1111136421
+```
+
+We can verfiy this is working by examining table 10 and seeing that only people who chose 3 for `Likert_1` receive a score value of 1 while those who chose 1, 2, 4, 5, or 6 receive a score value of 0.
+
+### Mixing and Matching
+
+Any number or combination of optional arguments can be used at the same time. For example we can create a control file with different groups of items, that is anchored to both item and structure-threshold values, with demographics that has a scoring key. This would look like:
+
+```{r, eval=FALSE}
+r_control_file("mixed_data", mixed_data, 2, 10, "ID", 
+               groups = c("1-5 1", "6-10 2"),
+               ifile = "dicot_post_ifile.txt",
+               sfile = "dicot_post_sfile.txt",
+               demographics = mixed_demo,
+               key = "1111135215")
+```

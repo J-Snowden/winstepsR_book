@@ -17,4 +17,5 @@ ifile
 sfile
 demographics
 key
+mixing-and-matching
 winsteps_output

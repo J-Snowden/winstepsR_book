@@ -10,7 +10,7 @@
 
   <meta property="og:title" content="Chapter 2 Generating Control Files | Automating Winsteps Output with winstepsR" />
   <meta property="og:type" content="book" />
-  <meta property="og:image" content="/images/cover.jpg" />
+  <meta property="og:image" content="https://j-snowden.github.io/winstepsR_book/images/cover.jpg" />
   <meta property="og:description" content="This is a guide on how to use the R package winstepsR to automate file output from Winsteps." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
@@ -18,7 +18,7 @@
   <meta name="twitter:title" content="Chapter 2 Generating Control Files | Automating Winsteps Output with winstepsR" />
   
   <meta name="twitter:description" content="This is a guide on how to use the R package winstepsR to automate file output from Winsteps." />
-  <meta name="twitter:image" content="/images/cover.jpg" />
+  <meta name="twitter:image" content="https://j-snowden.github.io/winstepsR_book/images/cover.jpg" />
 
 <meta name="author" content="Jeffrey Snowden" />
 
@@ -186,6 +186,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.2.3" data-path="generating-control-files.html"><a href="generating-control-files.html#sfile"><i class="fa fa-check"></i><b>2.2.3</b> sfile</a></li>
 <li class="chapter" data-level="2.2.4" data-path="generating-control-files.html"><a href="generating-control-files.html#demographics"><i class="fa fa-check"></i><b>2.2.4</b> demographics</a></li>
 <li class="chapter" data-level="2.2.5" data-path="generating-control-files.html"><a href="generating-control-files.html#key"><i class="fa fa-check"></i><b>2.2.5</b> key</a></li>
+<li class="chapter" data-level="2.2.6" data-path="generating-control-files.html"><a href="generating-control-files.html#mixing-and-matching"><i class="fa fa-check"></i><b>2.2.6</b> Mixing and Matching</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="winsteps_output.html"><a href="winsteps_output.html"><i class="fa fa-check"></i><b>3</b> <code>winsteps_output</code></a></li>
@@ -257,7 +258,7 @@ div.csl-indent {
 <p>An Item Output File, or ifile, is a file that contains the calibration information for each item. Chapter 3 details how to generate an ifile, but this step assumes you already have one created. For more detailed information, you can refer to Section 11.73 IFILE= item output file, in the <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf#page=153" target="_blank">Winsteps manual</a> <span class="citation">(<a href="#ref-winstepsManual">Linacre 2023</a>)</span>.</p>
 <p>When passed to the <code>r_control_file</code> function, the ifile acts as an anchoring file by adding the IAFILE line to the control file. Anchoring involves fixing the parameters of items to set values for the analysis. An example is creating an ifile from post test measures and using it to anchor the item difficulties of a pretest to the post test values. For more detailed information, you can refer to 11.65 IAFILE= item anchor file, in the <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf#page=141" target="_blank">Winsteps manual</a> <span class="citation">(<a href="#ref-winstepsManual">Linacre 2023</a>)</span>.</p>
 <p>The following code assumes that you have a ifile named “dicot_post_ifile.txt” in the working directory.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="generating-control-files.html#cb14-1" tabindex="-1"></a><span class="fu">r_control_file</span>(<span class="st">&quot;dicot_cf_r.txt&quot;</span>, dicot, <span class="dv">2</span>, <span class="dv">5</span>, <span class="st">&quot;ID&quot;</span>, </span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="generating-control-files.html#cb14-1" tabindex="-1"></a><span class="fu">r_control_file</span>(<span class="st">&quot;dicot&quot;</span>, dicot, <span class="dv">2</span>, <span class="dv">5</span>, <span class="st">&quot;ID&quot;</span>, </span>
 <span id="cb14-2"><a href="generating-control-files.html#cb14-2" tabindex="-1"></a>               <span class="at">ifile =</span> <span class="st">&quot;dicot_post_ifile.txt&quot;</span>)</span></code></pre></div>
 <p>In the control file this adds the following:</p>
 <pre><code>IAFILE = dicot_post_ifile.txt</code></pre>
@@ -268,19 +269,50 @@ div.csl-indent {
 <p>An Item-structure Output File, or sfile, is a file that contains the category structure-threshold values for each item. Chapter 3 details how to generate an sfile, but this step assumes you already have one created. For more detailed information, you can refer to Section 11.174 SFILE= category structure-threshold output file, in the <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf#page=264" target="_blank">Winsteps manual</a> <span class="citation">(<a href="#ref-winstepsManual">Linacre 2023</a>)</span>.</p>
 <p>When passed to the <code>r_control_file</code> function, the sfile acts as an anchoring file by adding the SAFILE line to the control file. <strong>When anchoring polytomous data using a rating scale model you must use both an ifile and sfile to anchor both the item vales and the category structure-threshold values.</strong></p>
 <p>The following code assumes that you have an ifile named “dicot_post_ifile.txt” and an sfile named “dicot_post_sfile.txt” in the working directory.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="generating-control-files.html#cb16-1" tabindex="-1"></a><span class="fu">r_control_file</span>(<span class="st">&quot;dicot_cf_r.txt&quot;</span>, dicot, <span class="dv">2</span>, <span class="dv">5</span>, <span class="st">&quot;ID&quot;</span>,</span>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="generating-control-files.html#cb16-1" tabindex="-1"></a><span class="fu">r_control_file</span>(<span class="st">&quot;dicot&quot;</span>, dicot, <span class="dv">2</span>, <span class="dv">5</span>, <span class="st">&quot;ID&quot;</span>,</span>
 <span id="cb16-2"><a href="generating-control-files.html#cb16-2" tabindex="-1"></a>               <span class="at">ifile =</span> <span class="st">&quot;dicot_post_ifile.txt&quot;</span>,</span>
 <span id="cb16-3"><a href="generating-control-files.html#cb16-3" tabindex="-1"></a>               <span class="at">sfile =</span> <span class="st">&quot;dicot_post_sfile.txt&quot;</span>)</span></code></pre></div>
 <p>In the control file this adds the following:</p>
 <pre><code>IAFILE = dicot_post_ifile.txt
 SAFILE = dicot_post_sfile.txt</code></pre>
-<p>Now when an analysis is run using the control file the values of all the items will be anchored to the values in the ifile and the category structure-threshold values will be anchored to the values in the sfile. You can verify the sfile is working by examining Table 3.2 and ADD TEXT HERE.</p>
+<p>Now when an analysis is run using the control file the values of all the items will be anchored to the values in the ifile and the category structure-threshold values will be anchored to the values in the sfile. You can verify the sfile is working by examining Table 3.2 and looking for an A under the ANDRICH THRESHOLD column indicating that the structure-threshold values are anchored.</p>
 </div>
 <div id="demographics" class="section level3 hasAnchor" number="2.2.4">
 <h3><span class="header-section-number">2.2.4</span> demographics<a href="generating-control-files.html#demographics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>demographics</code> argument passed to the function allows you to add demographic variables to the control file which can later be use in differential item functioning (DIF) analyses later.</p>
+<p>This argument needs a data frame with only demographic variables. The demographic data will be appended to the dataframe supplied in <code>df</code>, meaning the demographic dataframe needs to be the same length and sorted in the same way as the <code>df</code> data. This is easy to do if your original data file has all the data you will use.</p>
+<p>This example will use the <code>dicot</code> data frame we created earlier. To create the demographic data frame we will seperate it from our <code>sampledata</code> data set.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="generating-control-files.html#cb18-1" tabindex="-1"></a>dicot_demo <span class="ot">&lt;-</span> sampledata <span class="sc">%&gt;%</span> <span class="fu">select</span>(Demo_1, Demo_2)</span></code></pre></div>
+<p>Now that we have our demographic data in it’s own data frame we can run the function.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="generating-control-files.html#cb19-1" tabindex="-1"></a><span class="fu">r_control_file</span>(<span class="st">&quot;dicot&quot;</span>, dicot, <span class="dv">2</span>, <span class="dv">5</span>, <span class="st">&quot;ID&quot;</span>,</span>
+<span id="cb19-2"><a href="generating-control-files.html#cb19-2" tabindex="-1"></a>               <span class="at">demographics =</span> dicot_demo)</span></code></pre></div>
+<p>In the control file this adds the following:</p>
+<pre><code>@Demo_1 = 5E5 ;
+@Demo_2 = 7E7 ;</code></pre>
+<p><code>@Demo_1</code> is the first demographic column name, <code>5E5</code> indicates that the value for this variable begins and ends on the 5th character space of the person identifier. Addtionally, the demographic values for each person are now displayed after their <code>ID</code>.</p>
 </div>
 <div id="key" class="section level3 hasAnchor" number="2.2.5">
 <h3><span class="header-section-number">2.2.5</span> key<a href="generating-control-files.html#key" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>key</code> argument can be used to score multiple choice items, assigning a value of 1 to correct answers and a 0 to incorrect answers .For more detailed information, you can refer to 11.96 KEYn= scoring key, in the <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf#page=186" target="_blank">Winsteps manual</a> <span class="citation">(<a href="#ref-winstepsManual">Linacre 2023</a>)</span>.</p>
+<p>For this example we can use the previously created <code>mixed_data</code> data frame. For this purpose lets assume that the five Likert items are actually multiple choice questions with 6 answers. First, we can example the order of the columns in the data.</p>
+<pre><code>##  [1] &quot;ID&quot;       &quot;Dicot_1&quot;  &quot;Dicot_2&quot;  &quot;Dicot_3&quot;  &quot;Dicot_4&quot;  &quot;Dicot_5&quot; 
+##  [7] &quot;Likert_1&quot; &quot;Likert_2&quot; &quot;Likert_3&quot; &quot;Likert_4&quot; &quot;Likert_5&quot;</code></pre>
+<p>We can see that the dichotomous items come first, as they are already in values of either 0 or 1, we can assume that 1 is the correct answer. For the following five items lets assume that the correct answers are 3, 5, 2, 1, 5. Combining these, the correct answers for the full data set would be 1111135215. We can pass this information to the function using the <code>key</code> argument as follows:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="generating-control-files.html#cb22-1" tabindex="-1"></a><span class="fu">r_control_file</span>(<span class="st">&quot;mixed_data&quot;</span>, mixed_data, <span class="dv">2</span>, <span class="dv">10</span>, <span class="st">&quot;ID&quot;</span>, </span>
+<span id="cb22-2"><a href="generating-control-files.html#cb22-2" tabindex="-1"></a>               <span class="at">key =</span> <span class="st">&quot;1111135215&quot;</span>)</span></code></pre></div>
+<p>In the control file this adds the following:</p>
+<pre><code>KEY = 1111136421</code></pre>
+<p>We can verfiy this is working by examining table 10 and seeing that only people who chose 3 for <code>Likert_1</code> receive a score value of 1 while those who chose 1, 2, 4, 5, or 6 receive a score value of 0.</p>
+</div>
+<div id="mixing-and-matching" class="section level3 hasAnchor" number="2.2.6">
+<h3><span class="header-section-number">2.2.6</span> Mixing and Matching<a href="generating-control-files.html#mixing-and-matching" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Any number or combination of optional arguments can be used at the same time. For example we can create a control file with different groups of items, that is anchored to both item and structure-threshold values, with demographics that has a scoring key. This would look like:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="generating-control-files.html#cb24-1" tabindex="-1"></a><span class="fu">r_control_file</span>(<span class="st">&quot;mixed_data&quot;</span>, mixed_data, <span class="dv">2</span>, <span class="dv">10</span>, <span class="st">&quot;ID&quot;</span>, </span>
+<span id="cb24-2"><a href="generating-control-files.html#cb24-2" tabindex="-1"></a>               <span class="at">groups =</span> <span class="fu">c</span>(<span class="st">&quot;1-5 1&quot;</span>, <span class="st">&quot;6-10 2&quot;</span>),</span>
+<span id="cb24-3"><a href="generating-control-files.html#cb24-3" tabindex="-1"></a>               <span class="at">ifile =</span> <span class="st">&quot;dicot_post_ifile.txt&quot;</span>,</span>
+<span id="cb24-4"><a href="generating-control-files.html#cb24-4" tabindex="-1"></a>               <span class="at">sfile =</span> <span class="st">&quot;dicot_post_sfile.txt&quot;</span>,</span>
+<span id="cb24-5"><a href="generating-control-files.html#cb24-5" tabindex="-1"></a>               <span class="at">demographics =</span> mixed_demo,</span>
+<span id="cb24-6"><a href="generating-control-files.html#cb24-6" tabindex="-1"></a>               <span class="at">key =</span> <span class="st">&quot;1111135215&quot;</span>)</span></code></pre></div>
 
 </div>
 </div>
@@ -288,7 +320,7 @@ SAFILE = dicot_post_sfile.txt</code></pre>
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-winstepsManual" class="csl-entry">
-Linacre, John M. 2023. <em>Winsteps® Rasch Measurement Computer Program User’s Guide</em>. Version 5.7.2. Portland, Oregon: Winsteps.com. <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf">https://www.winsteps.com/a/Winsteps-Manual.pdf</a>.
+Linacre, J. M. 2023. <em>Winsteps® Rasch Measurement Computer Program User’s Guide</em>. Version 5.7.2. Portland, Oregon: Winsteps.com. <a href="https://www.winsteps.com/a/Winsteps-Manual.pdf">https://www.winsteps.com/a/Winsteps-Manual.pdf</a>.
 </div>
 </div>
             </section>
